@@ -36,7 +36,7 @@ const learningItems = [
 
 export const Dashboard = () => {
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-4 md:p-6 space-y-6 md:space-y-8">
       <div className="space-y-4">
         <div className="flex items-center gap-2 text-gray-500">
           <span>Dashboard</span>
@@ -46,14 +46,14 @@ export const Dashboard = () => {
         <h2 className="text-xl font-semibold">Explore</h2>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {learningItems.map((item) => (
           <LearningCard key={item.number} {...item} />
         ))}
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-6">Recommended Templates</h2>
+        <h2 className="text-xl font-semibold mb-4 md:mb-6">Recommended Templates</h2>
         {/* Templates section to be added in future iterations */}
       </div>
     </div>
