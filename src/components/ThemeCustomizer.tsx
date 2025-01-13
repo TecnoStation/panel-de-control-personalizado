@@ -35,6 +35,7 @@ export const ThemeCustomizer = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [customColor, setCustomColor] = useState("#9b87f5");
+  const [selectedColor, setSelectedColor] = useState<{ primary: string; sidebar: string } | null>(null);
 
   const changeTheme = (color: { primary: string; sidebar: string }) => {
     const root = document.documentElement;
@@ -94,7 +95,17 @@ export const ThemeCustomizer = () => {
     }
 
     const hslColor = `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-    changeTheme({ primary: hslColor, sidebar: hslColor });
+    setSelectedColor({ primary: hslColor, sidebar: hslColor });
+  };
+
+  const handlePresetColorClick = (color: typeof colors[0]) => {
+    setSelectedColor(color);
+  };
+
+  const handleApplyColor = () => {
+    if (selectedColor) {
+      changeTheme(selectedColor);
+    }
   };
 
   return (
@@ -122,8 +133,10 @@ export const ThemeCustomizer = () => {
               {colors.map((color) => (
                 <button
                   key={color.name}
-                  onClick={() => changeTheme(color)}
-                  className="group relative aspect-square rounded-full"
+                  onClick={() => handlePresetColorClick(color)}
+                  className={`group relative aspect-square rounded-full ${
+                    selectedColor === color ? 'ring-2 ring-primary ring-offset-2' : ''
+                  }`}
                   style={{ background: `hsl(${color.primary})` }}
                 >
                   <span className="sr-only">{color.name}</span>
@@ -149,6 +162,11 @@ export const ThemeCustomizer = () => {
             </div>
           </TabsContent>
         </Tabs>
+        <div className="flex justify-end mt-4">
+          <Button onClick={handleApplyColor} disabled={!selectedColor}>
+            Elegir color
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
