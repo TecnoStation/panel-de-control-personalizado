@@ -24,18 +24,13 @@ const colors = [
   { name: "Ámbar", primary: "45 93% 47%", sidebar: "45 93% 47%" },
   { name: "Violeta", primary: "280 67% 44%", sidebar: "280 67% 44%" },
   { name: "Lima", primary: "85 81% 44%", sidebar: "85 81% 44%" },
-  // Colores pastel
-  { name: "Pastel Verde", primary: "120 40% 85%", sidebar: "120 40% 85%" },
-  { name: "Pastel Azul", primary: "210 40% 85%", sidebar: "210 40% 85%" },
-  { name: "Pastel Rosa", primary: "330 40% 85%", sidebar: "330 40% 85%" },
-  { name: "Pastel Amarillo", primary: "60 40% 85%", sidebar: "60 40% 85%" },
 ];
 
 export const ThemeCustomizer = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [customColor, setCustomColor] = useState("#9b87f5");
-  const [selectedColor, setSelectedColor] = useState<{ primary: string; sidebar: string } | null>(null);
+  const [selectedColor, setSelectedColor] = useState<{ primary: string; sidebar: string; name?: string } | null>(null);
 
   const changeTheme = (color: { primary: string; sidebar: string }) => {
     const root = document.documentElement;
@@ -95,7 +90,7 @@ export const ThemeCustomizer = () => {
     }
 
     const hslColor = `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-    setSelectedColor({ primary: hslColor, sidebar: hslColor });
+    setSelectedColor({ primary: hslColor, sidebar: hslColor, name: "Personalizado" });
   };
 
   const handlePresetColorClick = (color: typeof colors[0]) => {
@@ -107,6 +102,11 @@ export const ThemeCustomizer = () => {
       changeTheme(selectedColor);
     }
   };
+
+  const allColors = [...colors];
+  if (selectedColor && selectedColor.name === "Personalizado") {
+    allColors.push(selectedColor);
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -130,9 +130,9 @@ export const ThemeCustomizer = () => {
           </TabsList>
           <TabsContent value="presets">
             <div className="grid grid-cols-4 gap-4 py-4">
-              {colors.map((color) => (
+              {allColors.map((color, index) => (
                 <button
-                  key={color.name}
+                  key={color.name || index}
                   onClick={() => handlePresetColorClick(color)}
                   className={`group relative aspect-square rounded-full ${
                     selectedColor === color ? 'ring-2 ring-primary ring-offset-2' : ''
