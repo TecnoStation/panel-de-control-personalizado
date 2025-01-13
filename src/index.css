@@ -26,7 +26,7 @@
     --radius: 0.5rem;
 
     /* Variables del sidebar */
-    --sidebar-background: 267 77% 74%;
+    --sidebar-background: hsl(267 77% 74%);
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 267 77% 74%;
     --sidebar-primary-foreground: 0 0% 100%;

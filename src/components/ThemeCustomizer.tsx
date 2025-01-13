@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
 const colors = [
@@ -31,20 +31,24 @@ export const ThemeCustomizer = () => {
 
   const changeTheme = (color: { primary: string; sidebar: string }) => {
     const root = document.documentElement;
+    
+    // Actualizamos todas las variables CSS relacionadas con el sidebar
     root.style.setProperty("--primary", color.primary);
+    root.style.setProperty("--sidebar-background", `hsl(${color.sidebar})`);
     root.style.setProperty("--sidebar-primary", color.primary);
-    root.style.setProperty("--sidebar-background", color.sidebar);
+    root.style.setProperty("--sidebar-ring", color.primary);
     
     // Ajustamos el color del texto para asegurar contraste
     root.style.setProperty("--sidebar-foreground", "0 0% 100%");
+    root.style.setProperty("--sidebar-primary-foreground", "0 0% 100%");
     root.style.setProperty("--sidebar-accent", "0 0% 100% / 0.1");
     root.style.setProperty("--sidebar-accent-foreground", "0 0% 100%");
     root.style.setProperty("--sidebar-border", "0 0% 100% / 0.1");
-    root.style.setProperty("--sidebar-ring", color.primary);
     
     toast({
       title: "Tema actualizado",
       description: "El color del tema ha sido cambiado exitosamente.",
+      duration: 2000, // El toast desaparecerá después de 2 segundos
     });
 
     // Cerramos el modal después de seleccionar el color
