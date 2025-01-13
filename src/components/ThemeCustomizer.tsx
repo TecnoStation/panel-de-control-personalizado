@@ -34,7 +34,7 @@ export const ThemeCustomizer = () => {
     
     // Actualizamos todas las variables CSS relacionadas con el sidebar
     root.style.setProperty("--primary", color.primary);
-    root.style.setProperty("--sidebar-background", `hsl(${color.sidebar})`);
+    root.style.setProperty("--sidebar-background", color.sidebar);
     root.style.setProperty("--sidebar-primary", color.primary);
     root.style.setProperty("--sidebar-ring", color.primary);
     
