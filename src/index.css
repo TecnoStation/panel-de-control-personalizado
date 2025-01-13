@@ -59,7 +59,7 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 2px;
+  width: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -67,10 +67,10 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.3);
 }
