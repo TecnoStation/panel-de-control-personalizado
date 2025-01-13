@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import { Settings, Menu } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export const Header = () => {
@@ -7,7 +7,14 @@ export const Header = () => {
     <div className="flex justify-between items-center p-4 border-b">
       <div className="flex items-center gap-4">
         <div className="block md:hidden">
-          <SidebarTrigger />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7"
+            onClick={() => document.querySelector('[data-sidebar="trigger"]')?.click()}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
         </div>
         <h1 className="text-2xl font-semibold">My Organization</h1>
       </div>
