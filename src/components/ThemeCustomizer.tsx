@@ -8,6 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 
 const colors = [
   { name: "Púrpura", primary: "267 77% 74%", sidebar: "267 77% 74%" },
@@ -26,26 +27,32 @@ const colors = [
 
 export const ThemeCustomizer = () => {
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
 
   const changeTheme = (color: { primary: string; sidebar: string }) => {
     const root = document.documentElement;
     root.style.setProperty("--primary", color.primary);
     root.style.setProperty("--sidebar-primary", color.primary);
-    root.style.setProperty("--sidebar-background", `${color.sidebar}`);
+    root.style.setProperty("--sidebar-background", color.sidebar);
     
     // Ajustamos el color del texto para asegurar contraste
     root.style.setProperty("--sidebar-foreground", "0 0% 100%");
     root.style.setProperty("--sidebar-accent", "0 0% 100% / 0.1");
     root.style.setProperty("--sidebar-accent-foreground", "0 0% 100%");
+    root.style.setProperty("--sidebar-border", "0 0% 100% / 0.1");
+    root.style.setProperty("--sidebar-ring", color.primary);
     
     toast({
       title: "Tema actualizado",
       description: "El color del tema ha sido cambiado exitosamente.",
     });
+
+    // Cerramos el modal después de seleccionar el color
+    setOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="default"
