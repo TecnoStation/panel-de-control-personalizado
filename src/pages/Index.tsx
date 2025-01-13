@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { Dashboard } from "@/components/Dashboard";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ThemeCustomizer } from "@/components/ThemeCustomizer";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
           <Header />
           <Dashboard />
         </div>
+        <ThemeCustomizer />
       </div>
     </SidebarProvider>
   );
