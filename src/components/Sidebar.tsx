@@ -20,7 +20,7 @@ const bottomNavItems = [
 
 export const Sidebar = () => {
   return (
-    <div className="w-64 bg-primary min-h-screen flex flex-col">
+    <div className="w-64 sidebar-gradient min-h-screen flex flex-col">
       <div className="p-4 border-b border-white/10">
         <h2 className="text-white font-semibold px-4">MY ORGANIZATION</h2>
       </div>

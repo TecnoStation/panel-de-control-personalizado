@@ -47,3 +47,7 @@
 .nav-item.active {
   @apply bg-white/10 text-white;
 }
+
+.sidebar-gradient {
+  background: linear-gradient(180deg, rgb(147, 51, 234) 0%, rgb(126, 34, 206) 100%);
+}
