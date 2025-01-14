@@ -59,6 +59,7 @@
 }
 
 .sidebar-gradient {
+  position: relative;
   background: hsl(var(--sidebar-background));
   backdrop-filter: blur(10px);
 }

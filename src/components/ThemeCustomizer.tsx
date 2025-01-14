@@ -26,15 +26,18 @@ export const ThemeCustomizer = () => {
     const root = document.documentElement;
     
     if ('value' in color) {
-      // Para degradados, mantenemos el color primario pero aplicamos el degradado al sidebar
-      root.style.setProperty("--primary", "267 77% 74%");
-      
-      // Aplicar el degradado usando CSS personalizado
+      // Para degradados, aplicamos el degradado directamente
       const style = document.createElement('style');
       style.textContent = `
         .sidebar-gradient {
           background: ${color.value} !important;
-          background-attachment: fixed !important;
+        }
+        .sidebar-gradient::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          backdrop-filter: blur(10px);
         }
       `;
       
