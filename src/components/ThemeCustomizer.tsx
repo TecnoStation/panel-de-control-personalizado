@@ -26,17 +26,32 @@ export const ThemeCustomizer = () => {
     const root = document.documentElement;
     
     if ('value' in color) {
-      root.style.setProperty("--primary", color.value);
-      root.style.setProperty("--sidebar-background", color.value);
-      root.style.setProperty("--sidebar-primary", color.value);
-      root.style.setProperty("--sidebar-ring", color.value);
+      // Si es un degradado
+      root.style.setProperty("--primary", "267 77% 74%"); // Color base para elementos primarios
+      root.style.setProperty("--sidebar-background", "267 77% 74%");
+      root.style.setProperty("--sidebar-primary", "267 77% 74%");
+      root.style.setProperty("--sidebar-ring", "267 77% 74%");
+      
+      // Aplicar el degradado directamente al sidebar
+      const sidebarElements = document.querySelectorAll('.sidebar-gradient');
+      sidebarElements.forEach(element => {
+        (element as HTMLElement).style.background = color.value;
+      });
     } else if (color.primary && color.sidebar) {
+      // Si es un color sólido
       root.style.setProperty("--primary", color.primary);
       root.style.setProperty("--sidebar-background", color.sidebar);
       root.style.setProperty("--sidebar-primary", color.primary);
       root.style.setProperty("--sidebar-ring", color.primary);
+      
+      // Restablecer cualquier degradado previo
+      const sidebarElements = document.querySelectorAll('.sidebar-gradient');
+      sidebarElements.forEach(element => {
+        (element as HTMLElement).style.background = `hsl(var(--sidebar-background))`;
+      });
     }
     
+    // Mantener los colores de texto y acentos consistentes
     root.style.setProperty("--sidebar-foreground", "0 0% 100%");
     root.style.setProperty("--sidebar-primary-foreground", "0 0% 100%");
     root.style.setProperty("--sidebar-accent", "0 0% 100% / 0.1");
