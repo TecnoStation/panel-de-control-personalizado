@@ -11,7 +11,10 @@ export const Header = () => {
             variant="ghost"
             size="icon"
             className="h-7 w-7"
-            onClick={() => document.querySelector('[data-sidebar="trigger"]')?.click()}
+            onClick={() => {
+              const trigger = document.querySelector('[data-sidebar="trigger"]') as HTMLButtonElement;
+              if (trigger) trigger.click();
+            }}
           >
             <Menu className="h-5 w-5" />
           </Button>

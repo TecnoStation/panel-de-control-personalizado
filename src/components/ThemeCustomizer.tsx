@@ -20,19 +20,15 @@ const colors = [
   { name: "Rosa", primary: "316 73% 52%", sidebar: "316 73% 52%" },
   { name: "Magenta", primary: "322 81% 61%", sidebar: "322 81% 61%" },
   { name: "Índigo", primary: "245 58% 51%", sidebar: "245 58% 51%" },
-  { name: "Cian", primary: "187 100% 42%", sidebar: "187 100% 42%" },
-  { name: "Ámbar", primary: "45 93% 47%", sidebar: "45 93% 47%" },
-  { name: "Violeta", primary: "280 67% 44%", sidebar: "280 67% 44%" },
-  { name: "Lima", primary: "85 81% 44%", sidebar: "85 81% 44%" },
 ];
 
 export const ThemeCustomizer = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [customColor, setCustomColor] = useState("#9b87f5");
-  const [selectedColor, setSelectedColor] = useState<{ primary: string; sidebar: string; name?: string } | null>(null);
+  const [selectedColor, setSelectedColor] = useState<{ name: string; primary: string; sidebar: string } | null>(null);
 
-  const changeTheme = (color: { primary: string; sidebar: string }) => {
+  const changeTheme = (color: { name: string; primary: string; sidebar: string }) => {
     const root = document.documentElement;
     
     root.style.setProperty("--primary", color.primary);
@@ -90,7 +86,7 @@ export const ThemeCustomizer = () => {
     }
 
     const hslColor = `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-    setSelectedColor({ primary: hslColor, sidebar: hslColor, name: "Personalizado" });
+    setSelectedColor({ name: "Personalizado", primary: hslColor, sidebar: hslColor });
   };
 
   const handlePresetColorClick = (color: typeof colors[0]) => {
