@@ -26,11 +26,15 @@ export const ThemeCustomizer = () => {
     const root = document.documentElement;
     
     if ('value' in color) {
-      // Para degradados, aplicamos el degradado directamente
+      // Para degradados, aplicamos el degradado a todas las secciones del sidebar
       const style = document.createElement('style');
       style.textContent = `
-        .sidebar-gradient {
+        .sidebar-gradient,
+        [data-sidebar="header"],
+        [data-sidebar="content"],
+        [data-sidebar="footer"] {
           background: ${color.value} !important;
+          backdrop-filter: blur(10px);
         }
       `;
       

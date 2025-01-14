@@ -58,7 +58,10 @@
   @apply bg-white/10 text-white;
 }
 
-.sidebar-gradient {
+.sidebar-gradient,
+[data-sidebar="header"],
+[data-sidebar="content"],
+[data-sidebar="footer"] {
   position: relative;
   background: hsl(var(--sidebar-background));
   backdrop-filter: blur(10px);
