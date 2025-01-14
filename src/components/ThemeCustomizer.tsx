@@ -26,68 +26,81 @@ export const ThemeCustomizer = () => {
     const root = document.documentElement;
     
     if ('value' in color) {
-      // Aplicar degradados a todos los elementos relevantes
+      // Aplicar degradados globalmente
       const style = document.createElement('style');
       style.textContent = `
-        /* Estilos para el sidebar */
+        :root {
+          --theme-gradient: ${color.value};
+        }
+
+        /* Sidebar gradient */
         .sidebar-gradient,
         [data-sidebar="header"],
         [data-sidebar="content"],
         [data-sidebar="footer"] {
-          background: ${color.value} !important;
+          background: var(--theme-gradient);
           backdrop-filter: blur(10px);
         }
 
-        /* Estilos para números y texto con gradiente */
-        .text-primary,
-        .number-gradient {
-          background: ${color.value} !important;
-          background-clip: text !important;
-          -webkit-background-clip: text !important;
-          color: transparent !important;
-          -webkit-text-fill-color: transparent !important;
+        /* Numbers and text gradients */
+        .number-gradient,
+        .text-gradient {
+          background: var(--theme-gradient);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
         }
 
-        /* Estilos para botones y elementos con fondo gradiente */
-        .bg-primary,
+        /* Buttons and backgrounds */
+        .gradient-bg,
         .button-gradient {
-          background: ${color.value} !important;
-          color: white !important;
+          background: var(--theme-gradient);
+          color: white;
         }
 
-        /* Estilos para hover en elementos con gradiente */
-        .bg-primary:hover,
+        /* Hover effects */
+        .gradient-bg:hover,
         .button-gradient:hover {
           opacity: 0.9;
-          transition: opacity 0.2s ease-in-out;
+          filter: brightness(1.1);
+          transition: all 0.2s ease-in-out;
+        }
+
+        /* Card gradients */
+        .card-gradient {
+          background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .card-gradient:hover {
+          background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,1));
         }
       `;
       
-      // Remover estilos anteriores si existen
-      const oldStyle = document.getElementById('gradient-style');
+      // Remover estilos anteriores
+      const oldStyle = document.getElementById('theme-style');
       if (oldStyle) {
         oldStyle.remove();
       }
       
-      // Agregar nuevos estilos
-      style.id = 'gradient-style';
+      style.id = 'theme-style';
       document.head.appendChild(style);
       
     } else if (color.primary && color.sidebar) {
-      // Para colores sólidos
       root.style.setProperty("--primary", color.primary);
       root.style.setProperty("--sidebar-background", color.sidebar);
       root.style.setProperty("--sidebar-primary", color.primary);
       root.style.setProperty("--sidebar-ring", color.primary);
       
-      // Remover cualquier estilo de degradado previo
-      const oldStyle = document.getElementById('gradient-style');
+      const oldStyle = document.getElementById('theme-style');
       if (oldStyle) {
         oldStyle.remove();
       }
     }
     
-    // Mantener los colores de texto y acentos consistentes
+    // Mantener colores de texto consistentes
     root.style.setProperty("--sidebar-foreground", "0 0% 100%");
     root.style.setProperty("--sidebar-primary-foreground", "0 0% 100%");
     root.style.setProperty("--sidebar-accent", "0 0% 100% / 0.1");
