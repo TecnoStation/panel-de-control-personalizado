@@ -41,6 +41,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 }
 
@@ -55,13 +57,13 @@
 
 /* Gradient elements */
 .gradient-bg {
-  background-image: var(--theme-gradient);
+  background-image: var(--theme-gradient, linear-gradient(267deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%));
   color: white;
   transition: all 0.2s ease-in-out;
 }
 
 .button-gradient {
-  background-image: var(--theme-gradient) !important;
+  background-image: var(--theme-gradient, linear-gradient(267deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%)) !important;
   color: white !important;
   transition: all 0.2s ease-in-out;
 }
@@ -73,7 +75,7 @@
 }
 
 .number-gradient {
-  background-image: var(--theme-gradient);
+  background-image: var(--theme-gradient, linear-gradient(267deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
