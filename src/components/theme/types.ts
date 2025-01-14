@@ -3,4 +3,5 @@ export type ColorOption = {
   primary?: string;
   sidebar?: string;
   value?: string;
+  isCustom?: boolean;
 };

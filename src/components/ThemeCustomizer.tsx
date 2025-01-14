@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ColorPicker } from "./theme/ColorPicker";
 import { GradientPicker } from "./theme/GradientPicker";
@@ -16,11 +16,22 @@ import { GradientCustomizer } from "./theme/GradientCustomizer";
 import { colors, gradients } from "./theme/colorData";
 import { ThemeProvider } from "./theme/ThemeContext";
 import { useThemeManager } from "./theme/ThemeManager";
+import { ColorOption } from "./theme/types";
+
+const CUSTOM_GRADIENTS_KEY = "custom-gradients";
 
 export const ThemeCustomizer = () => {
   const [open, setOpen] = useState(false);
   const [customColor, setCustomColor] = useState("#9b87f5");
+  const [customGradients, setCustomGradients] = useState<ColorOption[]>([]);
   const themeManager = useThemeManager();
+
+  useEffect(() => {
+    const savedGradients = localStorage.getItem(CUSTOM_GRADIENTS_KEY);
+    if (savedGradients) {
+      setCustomGradients(JSON.parse(savedGradients));
+    }
+  }, []);
 
   const handleCustomColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const color = e.target.value;
@@ -63,12 +74,26 @@ export const ThemeCustomizer = () => {
     themeManager.setSelectedColor({ name: "Gradiente Personalizado", value: gradient });
   };
 
+  const handleSaveGradient = (gradient: string, name: string) => {
+    const newGradient: ColorOption = {
+      name,
+      value: gradient,
+      isCustom: true
+    };
+    
+    const updatedGradients = [...customGradients, newGradient];
+    setCustomGradients(updatedGradients);
+    localStorage.setItem(CUSTOM_GRADIENTS_KEY, JSON.stringify(updatedGradients));
+  };
+
   const handleThemeChange = () => {
     if (themeManager.selectedColor) {
       themeManager.changeTheme(themeManager.selectedColor);
       setOpen(false);
     }
   };
+
+  const allGradients = [...gradients, ...customGradients];
 
   return (
     <ThemeProvider value={themeManager}>
@@ -104,7 +129,7 @@ export const ThemeCustomizer = () => {
 
             <TabsContent value="gradient" className="max-h-[300px] overflow-y-auto">
               <GradientPicker
-                gradients={gradients}
+                gradients={allGradients}
                 selectedColor={themeManager.selectedColor}
                 onColorSelect={themeManager.setSelectedColor}
               />
@@ -118,7 +143,11 @@ export const ThemeCustomizer = () => {
             </TabsContent>
 
             <TabsContent value="customGradient">
-              <GradientCustomizer onGradientChange={handleCustomGradient} />
+              <GradientCustomizer 
+                onGradientChange={handleCustomGradient}
+                onSaveGradient={handleSaveGradient}
+                currentGradient={'value' in themeManager.selectedColor ? themeManager.selectedColor.value : undefined}
+              />
             </TabsContent>
           </Tabs>
           <div className="flex justify-end mt-4">
