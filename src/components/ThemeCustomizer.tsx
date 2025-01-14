@@ -32,13 +32,6 @@ export const ThemeCustomizer = () => {
         .sidebar-gradient {
           background: ${color.value} !important;
         }
-        .sidebar-gradient::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          z-index: -1;
-          backdrop-filter: blur(10px);
-        }
       `;
       
       // Remover estilos anteriores si existen
@@ -148,7 +141,7 @@ export const ThemeCustomizer = () => {
             />
           </TabsContent>
 
-          <TabsContent value="gradient">
+          <TabsContent value="gradient" className="max-h-[300px] overflow-y-auto">
             <GradientPicker
               gradients={gradients}
               selectedColor={selectedColor}

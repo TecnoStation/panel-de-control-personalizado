@@ -8,12 +8,12 @@ interface GradientPickerProps {
 
 export const GradientPicker = ({ gradients, selectedColor, onColorSelect }: GradientPickerProps) => {
   return (
-    <div className="grid grid-cols-2 gap-3 py-3">
+    <div className="grid grid-cols-2 gap-2 py-2">
       {gradients.map((gradient) => (
         <button
           key={gradient.name}
           onClick={() => onColorSelect(gradient)}
-          className={`group relative h-14 rounded-lg ${
+          className={`group relative h-10 rounded-lg ${
             selectedColor === gradient ? 'ring-2 ring-primary ring-offset-2' : ''
           }`}
           style={{ background: 'value' in gradient ? gradient.value : '' }}
