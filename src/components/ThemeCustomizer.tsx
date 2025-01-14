@@ -26,7 +26,7 @@ export const ThemeCustomizer = () => {
     const root = document.documentElement;
     
     if ('value' in color) {
-      // Para degradados, aplicamos el degradado a todas las secciones del sidebar
+      // Para degradados, aplicamos el degradado a todas las secciones relevantes
       const style = document.createElement('style');
       style.textContent = `
         .sidebar-gradient,
@@ -35,6 +35,15 @@ export const ThemeCustomizer = () => {
         [data-sidebar="footer"] {
           background: ${color.value} !important;
           backdrop-filter: blur(10px);
+        }
+        .text-primary {
+          background: ${color.value} !important;
+          -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+        }
+        .bg-primary {
+          background: ${color.value} !important;
+          color: white !important;
         }
       `;
       

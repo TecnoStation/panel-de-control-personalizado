@@ -100,3 +100,17 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
+
+/* Estilos para el texto con gradiente */
+.text-primary {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-color: hsl(var(--primary));
+}
+
+/* Estilos para fondos con gradiente */
+.bg-primary {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
