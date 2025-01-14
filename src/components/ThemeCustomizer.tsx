@@ -26,14 +26,17 @@ export const ThemeCustomizer = () => {
     const root = document.documentElement;
     
     if ('value' in color) {
-      // Aplicar degradados globalmente
+      root.style.setProperty("--theme-gradient", color.value);
+      
+      // Remove any solid color variables when using gradients
+      root.style.removeProperty("--primary");
+      root.style.removeProperty("--sidebar-background");
+      root.style.removeProperty("--sidebar-primary");
+      root.style.removeProperty("--sidebar-ring");
+      
+      // Apply gradient styles
       const style = document.createElement('style');
       style.textContent = `
-        :root {
-          --theme-gradient: ${color.value};
-        }
-
-        /* Sidebar gradient */
         .sidebar-gradient,
         [data-sidebar="header"],
         [data-sidebar="content"],
@@ -41,45 +44,9 @@ export const ThemeCustomizer = () => {
           background: var(--theme-gradient);
           backdrop-filter: blur(10px);
         }
-
-        /* Numbers and text gradients */
-        .number-gradient,
-        .text-gradient {
-          background: var(--theme-gradient);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          -webkit-text-fill-color: transparent;
-        }
-
-        /* Buttons and backgrounds */
-        .gradient-bg,
-        .button-gradient {
-          background: var(--theme-gradient);
-          color: white;
-        }
-
-        /* Hover effects */
-        .gradient-bg:hover,
-        .button-gradient:hover {
-          opacity: 0.9;
-          filter: brightness(1.1);
-          transition: all 0.2s ease-in-out;
-        }
-
-        /* Card gradients */
-        .card-gradient {
-          background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .card-gradient:hover {
-          background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,1));
-        }
       `;
       
-      // Remover estilos anteriores
+      // Remove previous style if exists
       const oldStyle = document.getElementById('theme-style');
       if (oldStyle) {
         oldStyle.remove();
@@ -89,11 +56,17 @@ export const ThemeCustomizer = () => {
       document.head.appendChild(style);
       
     } else if (color.primary && color.sidebar) {
+      // For solid colors, set the CSS variables
       root.style.setProperty("--primary", color.primary);
       root.style.setProperty("--sidebar-background", color.sidebar);
       root.style.setProperty("--sidebar-primary", color.primary);
       root.style.setProperty("--sidebar-ring", color.primary);
       
+      // Set gradient for solid colors
+      const gradient = `linear-gradient(135deg, hsl(${color.primary}), hsl(${color.primary}))`;
+      root.style.setProperty("--theme-gradient", gradient);
+      
+      // Remove any existing gradient styles
       const oldStyle = document.getElementById('theme-style');
       if (oldStyle) {
         oldStyle.remove();

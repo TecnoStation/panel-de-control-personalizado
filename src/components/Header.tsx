@@ -25,7 +25,7 @@ export const Header = () => {
           <Settings className="w-4 h-4" />
           Organization settings
         </Button>
-        <Button className="bg-primary hover:bg-primary/90">
+        <Button className="button-gradient">
           <span className="hidden md:inline">Create a new scenario</span>
           <span className="md:hidden">New</span>
         </Button>
