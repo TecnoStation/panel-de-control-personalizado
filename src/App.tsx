@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
+import "./App.css";
 
 // Lazy load the Index page
 const Index = lazy(() => import("./pages/Index"));
@@ -34,7 +35,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen w-full bg-white text-[#1a1f2c]">
           <Toaster />
           <Sonner />
           <BrowserRouter>
