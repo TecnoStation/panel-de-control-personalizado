@@ -22,19 +22,74 @@ const colors = [
   { name: "Índigo", primary: "245 58% 51%", sidebar: "245 58% 51%" },
 ];
 
+const gradients = [
+  { 
+    name: "Atardecer",
+    value: "linear-gradient(90deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%)"
+  },
+  {
+    name: "Océano Profundo",
+    value: "linear-gradient(90deg, hsla(221, 45%, 73%, 1) 0%, hsla(220, 78%, 29%, 1) 100%)"
+  },
+  {
+    name: "Primavera",
+    value: "linear-gradient(184.1deg, rgba(249,255,182,1) 44.7%, rgba(226,255,172,1) 67.2%)"
+  },
+  {
+    name: "Amanecer",
+    value: "linear-gradient(90deg, hsla(29, 92%, 70%, 1) 0%, hsla(0, 87%, 73%, 1) 100%)"
+  },
+  {
+    name: "Lavanda",
+    value: "linear-gradient(102.3deg, rgba(147,39,143,1) 5.9%, rgba(234,172,232,1) 64%, rgba(246,219,245,1) 89%)"
+  },
+  {
+    name: "Bosque",
+    value: "linear-gradient(108deg, rgba(242,245,139,1) 17.7%, rgba(148,197,20,0.68) 91.2%)"
+  },
+  {
+    name: "Cielo",
+    value: "linear-gradient(109.6deg, rgba(223,234,247,1) 11.2%, rgba(244,248,252,1) 91.1%)"
+  },
+  {
+    name: "Desierto",
+    value: "linear-gradient(111.4deg, rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58%)"
+  }
+];
+
+type ColorOption = {
+  name: string;
+  primary: string;
+  sidebar: string;
+} | {
+  name: string;
+  value: string;
+  isGradient?: boolean;
+};
+
 export const ThemeCustomizer = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [customColor, setCustomColor] = useState("#9b87f5");
-  const [selectedColor, setSelectedColor] = useState<{ name: string; primary: string; sidebar: string } | null>(null);
+  const [selectedColor, setSelectedColor] = useState<ColorOption | null>(null);
+  const [colorType, setColorType] = useState<"solid" | "gradient">("solid");
 
-  const changeTheme = (color: { name: string; primary: string; sidebar: string }) => {
+  const changeTheme = (color: ColorOption) => {
     const root = document.documentElement;
     
-    root.style.setProperty("--primary", color.primary);
-    root.style.setProperty("--sidebar-background", color.sidebar);
-    root.style.setProperty("--sidebar-primary", color.primary);
-    root.style.setProperty("--sidebar-ring", color.primary);
+    if ('value' in color) {
+      // Es un gradiente
+      root.style.setProperty("--primary", color.value);
+      root.style.setProperty("--sidebar-background", color.value);
+      root.style.setProperty("--sidebar-primary", color.value);
+      root.style.setProperty("--sidebar-ring", color.value);
+    } else {
+      // Es un color sólido
+      root.style.setProperty("--primary", color.primary);
+      root.style.setProperty("--sidebar-background", color.sidebar);
+      root.style.setProperty("--sidebar-primary", color.primary);
+      root.style.setProperty("--sidebar-ring", color.primary);
+    }
     
     root.style.setProperty("--sidebar-foreground", "0 0% 100%");
     root.style.setProperty("--sidebar-primary-foreground", "0 0% 100%");
@@ -89,7 +144,7 @@ export const ThemeCustomizer = () => {
     setSelectedColor({ name: "Personalizado", primary: hslColor, sidebar: hslColor });
   };
 
-  const handlePresetColorClick = (color: typeof colors[0]) => {
+  const handleColorSelect = (color: ColorOption) => {
     setSelectedColor(color);
   };
 
@@ -98,11 +153,6 @@ export const ThemeCustomizer = () => {
       changeTheme(selectedColor);
     }
   };
-
-  const allColors = [...colors];
-  if (selectedColor && selectedColor.name === "Personalizado") {
-    allColors.push(selectedColor);
-  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -119,17 +169,23 @@ export const ThemeCustomizer = () => {
         <DialogHeader>
           <DialogTitle>Personalizar tema</DialogTitle>
         </DialogHeader>
-        <Tabs defaultValue="presets">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="presets">Preestablecidos</TabsTrigger>
+        <Tabs defaultValue="solid">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="solid" onClick={() => setColorType("solid")}>
+              Sólidos
+            </TabsTrigger>
+            <TabsTrigger value="gradient" onClick={() => setColorType("gradient")}>
+              Degradados
+            </TabsTrigger>
             <TabsTrigger value="custom">Personalizado</TabsTrigger>
           </TabsList>
-          <TabsContent value="presets">
+          
+          <TabsContent value="solid">
             <div className="grid grid-cols-4 gap-4 py-4">
-              {allColors.map((color, index) => (
+              {colors.map((color) => (
                 <button
-                  key={color.name || index}
-                  onClick={() => handlePresetColorClick(color)}
+                  key={color.name}
+                  onClick={() => handleColorSelect(color)}
                   className={`group relative aspect-square rounded-full ${
                     selectedColor === color ? 'ring-2 ring-primary ring-offset-2' : ''
                   }`}
@@ -141,6 +197,28 @@ export const ThemeCustomizer = () => {
               ))}
             </div>
           </TabsContent>
+
+          <TabsContent value="gradient">
+            <div className="grid grid-cols-2 gap-4 py-4">
+              {gradients.map((gradient) => (
+                <button
+                  key={gradient.name}
+                  onClick={() => handleColorSelect(gradient)}
+                  className={`group relative h-20 rounded-lg ${
+                    selectedColor === gradient ? 'ring-2 ring-primary ring-offset-2' : ''
+                  }`}
+                  style={{ background: gradient.value }}
+                >
+                  <span className="sr-only">{gradient.name}</span>
+                  <div className="absolute inset-0 rounded-lg ring-2 ring-primary ring-offset-2 ring-offset-background opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="absolute bottom-2 left-2 text-xs text-white font-medium drop-shadow-md">
+                    {gradient.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </TabsContent>
+
           <TabsContent value="custom">
             <div className="py-4 space-y-4">
               <div className="flex flex-col gap-2">
