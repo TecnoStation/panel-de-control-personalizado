@@ -19,15 +19,23 @@ export const useThemeManager = () => {
       root.style.removeProperty("--sidebar-primary");
       root.style.removeProperty("--sidebar-ring");
       
-      // Aplicar estilos de gradiente al sidebar
+      // Aplicar estilos de gradiente al sidebar y otros elementos
       const style = document.createElement('style');
       style.textContent = `
         .sidebar-gradient,
         [data-sidebar="header"],
         [data-sidebar="content"],
-        [data-sidebar="footer"] {
-          background-image: var(--theme-gradient);
-          backdrop-filter: blur(10px);
+        [data-sidebar="footer"],
+        .gradient-bg {
+          background-image: var(--theme-gradient) !important;
+          background-color: transparent !important;
+        }
+        
+        .number-gradient {
+          background-image: var(--theme-gradient) !important;
+          -webkit-background-clip: text !important;
+          background-clip: text !important;
+          color: transparent !important;
         }
       `;
       

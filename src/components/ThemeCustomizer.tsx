@@ -58,6 +58,13 @@ export const ThemeCustomizer = () => {
     themeManager.setSelectedColor({ name: "Personalizado", primary: hslColor, sidebar: hslColor });
   };
 
+  const handleThemeChange = () => {
+    if (themeManager.selectedColor) {
+      themeManager.changeTheme(themeManager.selectedColor);
+      setOpen(false); // Cerrar el modal después de cambiar el tema
+    }
+  };
+
   return (
     <ThemeProvider value={themeManager}>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -65,7 +72,7 @@ export const ThemeCustomizer = () => {
           <Button
             variant="default"
             size="icon"
-            className="fixed bottom-4 right-4 rounded-full shadow-lg"
+            className="fixed bottom-4 right-4 rounded-full shadow-lg gradient-bg"
           >
             <Settings className="h-5 w-5" />
           </Button>
@@ -106,8 +113,9 @@ export const ThemeCustomizer = () => {
           </Tabs>
           <div className="flex justify-end mt-4">
             <Button 
-              onClick={() => themeManager.selectedColor && themeManager.changeTheme(themeManager.selectedColor)} 
+              onClick={handleThemeChange}
               disabled={!themeManager.selectedColor}
+              className="gradient-bg"
             >
               Elegir color
             </Button>
