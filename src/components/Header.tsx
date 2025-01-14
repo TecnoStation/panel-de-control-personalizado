@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Settings, Menu } from "lucide-react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 
 export const Header = () => {
+  const { setOpenMobile } = useSidebar();
+
   return (
     <div className="flex justify-between items-center p-4 border-b">
       <div className="flex items-center gap-4">
@@ -11,10 +13,7 @@ export const Header = () => {
             variant="ghost"
             size="icon"
             className="h-7 w-7"
-            onClick={() => {
-              const trigger = document.querySelector('[data-sidebar="trigger"]') as HTMLButtonElement;
-              if (trigger) trigger.click();
-            }}
+            onClick={() => setOpenMobile(true)}
           >
             <Menu className="h-5 w-5" />
           </Button>
