@@ -7,7 +7,7 @@ import { ThemeCustomizer } from "@/components/ThemeCustomizer";
 const Index = () => {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen w-full bg-background">
         <Sidebar />
         <div className="flex-1 min-w-0">
           <Header />
