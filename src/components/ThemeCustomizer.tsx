@@ -26,29 +26,40 @@ export const ThemeCustomizer = () => {
     const root = document.documentElement;
     
     if ('value' in color) {
-      // Si es un degradado
-      root.style.setProperty("--primary", "267 77% 74%"); // Color base para elementos primarios
-      root.style.setProperty("--sidebar-background", "267 77% 74%");
-      root.style.setProperty("--sidebar-primary", "267 77% 74%");
-      root.style.setProperty("--sidebar-ring", "267 77% 74%");
+      // Para degradados, mantenemos el color primario pero aplicamos el degradado al sidebar
+      root.style.setProperty("--primary", "267 77% 74%");
       
-      // Aplicar el degradado directamente al sidebar
-      const sidebarElements = document.querySelectorAll('.sidebar-gradient');
-      sidebarElements.forEach(element => {
-        (element as HTMLElement).style.background = color.value;
-      });
+      // Aplicar el degradado usando CSS personalizado
+      const style = document.createElement('style');
+      style.textContent = `
+        .sidebar-gradient {
+          background: ${color.value} !important;
+          background-attachment: fixed !important;
+        }
+      `;
+      
+      // Remover estilos anteriores si existen
+      const oldStyle = document.getElementById('gradient-style');
+      if (oldStyle) {
+        oldStyle.remove();
+      }
+      
+      // Agregar nuevos estilos
+      style.id = 'gradient-style';
+      document.head.appendChild(style);
+      
     } else if (color.primary && color.sidebar) {
-      // Si es un color sólido
+      // Para colores sólidos
       root.style.setProperty("--primary", color.primary);
       root.style.setProperty("--sidebar-background", color.sidebar);
       root.style.setProperty("--sidebar-primary", color.primary);
       root.style.setProperty("--sidebar-ring", color.primary);
       
-      // Restablecer cualquier degradado previo
-      const sidebarElements = document.querySelectorAll('.sidebar-gradient');
-      sidebarElements.forEach(element => {
-        (element as HTMLElement).style.background = `hsl(var(--sidebar-background))`;
-      });
+      // Remover cualquier estilo de degradado previo
+      const oldStyle = document.getElementById('gradient-style');
+      if (oldStyle) {
+        oldStyle.remove();
+      }
     }
     
     // Mantener los colores de texto y acentos consistentes
