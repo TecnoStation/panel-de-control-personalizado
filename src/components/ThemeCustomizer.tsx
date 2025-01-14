@@ -26,9 +26,10 @@ export const ThemeCustomizer = () => {
     const root = document.documentElement;
     
     if ('value' in color) {
-      // Para degradados, aplicamos el degradado a todas las secciones relevantes
+      // Aplicar degradados a todos los elementos relevantes
       const style = document.createElement('style');
       style.textContent = `
+        /* Estilos para el sidebar */
         .sidebar-gradient,
         [data-sidebar="header"],
         [data-sidebar="content"],
@@ -36,14 +37,29 @@ export const ThemeCustomizer = () => {
           background: ${color.value} !important;
           backdrop-filter: blur(10px);
         }
-        .text-primary {
+
+        /* Estilos para números y texto con gradiente */
+        .text-primary,
+        .number-gradient {
           background: ${color.value} !important;
+          background-clip: text !important;
           -webkit-background-clip: text !important;
+          color: transparent !important;
           -webkit-text-fill-color: transparent !important;
         }
-        .bg-primary {
+
+        /* Estilos para botones y elementos con fondo gradiente */
+        .bg-primary,
+        .button-gradient {
           background: ${color.value} !important;
           color: white !important;
+        }
+
+        /* Estilos para hover en elementos con gradiente */
+        .bg-primary:hover,
+        .button-gradient:hover {
+          opacity: 0.9;
+          transition: opacity 0.2s ease-in-out;
         }
       `;
       
