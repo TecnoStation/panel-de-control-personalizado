@@ -32,7 +32,6 @@
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 100% / 0.1;
     --sidebar-ring: 267 77% 74%;
-    --theme-gradient: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-foreground)));
   }
 }
 
@@ -56,13 +55,13 @@
 
 /* Gradient elements */
 .gradient-bg {
-  background: var(--theme-gradient);
+  background-image: var(--theme-gradient);
   color: white;
   transition: all 0.2s ease-in-out;
 }
 
 .button-gradient {
-  background: var(--theme-gradient) !important;
+  background-image: var(--theme-gradient) !important;
   color: white !important;
   transition: all 0.2s ease-in-out;
 }
@@ -74,7 +73,7 @@
 }
 
 .number-gradient {
-  background: var(--theme-gradient);
+  background-image: var(--theme-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

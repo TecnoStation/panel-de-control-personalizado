@@ -7,87 +7,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ColorPicker } from "./theme/ColorPicker";
 import { GradientPicker } from "./theme/GradientPicker";
 import { CustomColorPicker } from "./theme/CustomColorPicker";
 import { colors, gradients } from "./theme/colorData";
-import { ColorOption } from "./theme/types";
+import { ThemeProvider } from "./theme/ThemeContext";
+import { useThemeManager } from "./theme/ThemeManager";
 
 export const ThemeCustomizer = () => {
-  const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [customColor, setCustomColor] = useState("#9b87f5");
-  const [selectedColor, setSelectedColor] = useState<ColorOption | null>(null);
-
-  const changeTheme = (color: ColorOption) => {
-    const root = document.documentElement;
-    
-    if ('value' in color) {
-      root.style.setProperty("--theme-gradient", color.value);
-      
-      // Remove any solid color variables when using gradients
-      root.style.removeProperty("--primary");
-      root.style.removeProperty("--sidebar-background");
-      root.style.removeProperty("--sidebar-primary");
-      root.style.removeProperty("--sidebar-ring");
-      
-      // Apply gradient styles
-      const style = document.createElement('style');
-      style.textContent = `
-        .sidebar-gradient,
-        [data-sidebar="header"],
-        [data-sidebar="content"],
-        [data-sidebar="footer"] {
-          background: var(--theme-gradient);
-          backdrop-filter: blur(10px);
-        }
-      `;
-      
-      // Remove previous style if exists
-      const oldStyle = document.getElementById('theme-style');
-      if (oldStyle) {
-        oldStyle.remove();
-      }
-      
-      style.id = 'theme-style';
-      document.head.appendChild(style);
-      
-    } else if (color.primary && color.sidebar) {
-      // For solid colors, set the CSS variables
-      root.style.setProperty("--primary", color.primary);
-      root.style.setProperty("--sidebar-background", color.sidebar);
-      root.style.setProperty("--sidebar-primary", color.primary);
-      root.style.setProperty("--sidebar-ring", color.primary);
-      
-      // Set gradient for solid colors
-      const gradient = `linear-gradient(135deg, hsl(${color.primary}), hsl(${color.primary}))`;
-      root.style.setProperty("--theme-gradient", gradient);
-      
-      // Remove any existing gradient styles
-      const oldStyle = document.getElementById('theme-style');
-      if (oldStyle) {
-        oldStyle.remove();
-      }
-    }
-    
-    // Mantener colores de texto consistentes
-    root.style.setProperty("--sidebar-foreground", "0 0% 100%");
-    root.style.setProperty("--sidebar-primary-foreground", "0 0% 100%");
-    root.style.setProperty("--sidebar-accent", "0 0% 100% / 0.1");
-    root.style.setProperty("--sidebar-accent-foreground", "0 0% 100%");
-    root.style.setProperty("--sidebar-border", "0 0% 100% / 0.1");
-    
-    toast({
-      title: "Tema actualizado",
-      description: "El color del tema ha sido cambiado exitosamente.",
-      duration: 2000,
-    });
-
-    setOpen(false);
-  };
+  const themeManager = useThemeManager();
 
   const handleCustomColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const color = e.target.value;
@@ -123,60 +55,65 @@ export const ThemeCustomizer = () => {
     }
 
     const hslColor = `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-    setSelectedColor({ name: "Personalizado", primary: hslColor, sidebar: hslColor });
+    themeManager.setSelectedColor({ name: "Personalizado", primary: hslColor, sidebar: hslColor });
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="default"
-          size="icon"
-          className="fixed bottom-4 right-4 rounded-full shadow-lg"
-        >
-          <Settings className="h-5 w-5" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Personalizar tema</DialogTitle>
-        </DialogHeader>
-        <Tabs defaultValue="solid">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="solid">Sólidos</TabsTrigger>
-            <TabsTrigger value="gradient">Degradados</TabsTrigger>
-            <TabsTrigger value="custom">Personalizado</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="solid">
-            <ColorPicker
-              colors={colors}
-              selectedColor={selectedColor}
-              onColorSelect={setSelectedColor}
-            />
-          </TabsContent>
-
-          <TabsContent value="gradient" className="max-h-[300px] overflow-y-auto">
-            <GradientPicker
-              gradients={gradients}
-              selectedColor={selectedColor}
-              onColorSelect={setSelectedColor}
-            />
-          </TabsContent>
-
-          <TabsContent value="custom">
-            <CustomColorPicker
-              customColor={customColor}
-              onCustomColorChange={handleCustomColorChange}
-            />
-          </TabsContent>
-        </Tabs>
-        <div className="flex justify-end mt-4">
-          <Button onClick={() => selectedColor && changeTheme(selectedColor)} disabled={!selectedColor}>
-            Elegir color
+    <ThemeProvider value={themeManager}>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button
+            variant="default"
+            size="icon"
+            className="fixed bottom-4 right-4 rounded-full shadow-lg"
+          >
+            <Settings className="h-5 w-5" />
           </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Personalizar tema</DialogTitle>
+          </DialogHeader>
+          <Tabs defaultValue="solid">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="solid">Sólidos</TabsTrigger>
+              <TabsTrigger value="gradient">Degradados</TabsTrigger>
+              <TabsTrigger value="custom">Personalizado</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="solid">
+              <ColorPicker
+                colors={colors}
+                selectedColor={themeManager.selectedColor}
+                onColorSelect={themeManager.setSelectedColor}
+              />
+            </TabsContent>
+
+            <TabsContent value="gradient" className="max-h-[300px] overflow-y-auto">
+              <GradientPicker
+                gradients={gradients}
+                selectedColor={themeManager.selectedColor}
+                onColorSelect={themeManager.setSelectedColor}
+              />
+            </TabsContent>
+
+            <TabsContent value="custom">
+              <CustomColorPicker
+                customColor={customColor}
+                onCustomColorChange={handleCustomColorChange}
+              />
+            </TabsContent>
+          </Tabs>
+          <div className="flex justify-end mt-4">
+            <Button 
+              onClick={() => themeManager.selectedColor && themeManager.changeTheme(themeManager.selectedColor)} 
+              disabled={!themeManager.selectedColor}
+            >
+              Elegir color
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </ThemeProvider>
   );
 };
