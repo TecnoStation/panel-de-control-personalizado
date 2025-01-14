@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ColorPicker } from "./theme/ColorPicker";
 import { GradientPicker } from "./theme/GradientPicker";
 import { CustomColorPicker } from "./theme/CustomColorPicker";
+import { GradientCustomizer } from "./theme/GradientCustomizer";
 import { colors, gradients } from "./theme/colorData";
 import { ThemeProvider } from "./theme/ThemeContext";
 import { useThemeManager } from "./theme/ThemeManager";
@@ -58,10 +59,14 @@ export const ThemeCustomizer = () => {
     themeManager.setSelectedColor({ name: "Personalizado", primary: hslColor, sidebar: hslColor });
   };
 
+  const handleCustomGradient = (gradient: string) => {
+    themeManager.setSelectedColor({ name: "Gradiente Personalizado", value: gradient });
+  };
+
   const handleThemeChange = () => {
     if (themeManager.selectedColor) {
       themeManager.changeTheme(themeManager.selectedColor);
-      setOpen(false); // Cerrar el modal después de cambiar el tema
+      setOpen(false);
     }
   };
 
@@ -82,10 +87,11 @@ export const ThemeCustomizer = () => {
             <DialogTitle>Personalizar tema</DialogTitle>
           </DialogHeader>
           <Tabs defaultValue="solid">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="solid">Sólidos</TabsTrigger>
               <TabsTrigger value="gradient">Degradados</TabsTrigger>
-              <TabsTrigger value="custom">Personalizado</TabsTrigger>
+              <TabsTrigger value="custom">Color</TabsTrigger>
+              <TabsTrigger value="customGradient">Degradado</TabsTrigger>
             </TabsList>
             
             <TabsContent value="solid">
@@ -109,6 +115,10 @@ export const ThemeCustomizer = () => {
                 customColor={customColor}
                 onCustomColorChange={handleCustomColorChange}
               />
+            </TabsContent>
+
+            <TabsContent value="customGradient">
+              <GradientCustomizer onGradientChange={handleCustomGradient} />
             </TabsContent>
           </Tabs>
           <div className="flex justify-end mt-4">
