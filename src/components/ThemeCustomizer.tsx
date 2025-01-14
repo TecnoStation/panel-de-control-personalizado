@@ -181,7 +181,7 @@ export const ThemeCustomizer = () => {
           </TabsList>
           
           <TabsContent value="solid">
-            <div className="grid grid-cols-4 gap-4 py-4">
+            <div className="grid grid-cols-4 gap-3 py-3">
               {colors.map((color) => (
                 <button
                   key={color.name}
@@ -199,19 +199,19 @@ export const ThemeCustomizer = () => {
           </TabsContent>
 
           <TabsContent value="gradient">
-            <div className="grid grid-cols-2 gap-4 py-4">
+            <div className="grid grid-cols-2 gap-3 py-3">
               {gradients.map((gradient) => (
                 <button
                   key={gradient.name}
                   onClick={() => handleColorSelect(gradient)}
-                  className={`group relative h-20 rounded-lg ${
+                  className={`group relative h-14 rounded-lg ${
                     selectedColor === gradient ? 'ring-2 ring-primary ring-offset-2' : ''
                   }`}
                   style={{ background: gradient.value }}
                 >
                   <span className="sr-only">{gradient.name}</span>
                   <div className="absolute inset-0 rounded-lg ring-2 ring-primary ring-offset-2 ring-offset-background opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <span className="absolute bottom-2 left-2 text-xs text-white font-medium drop-shadow-md">
+                  <span className="absolute bottom-1 left-2 text-[10px] text-white font-medium drop-shadow-md">
                     {gradient.name}
                   </span>
                 </button>
@@ -220,7 +220,7 @@ export const ThemeCustomizer = () => {
           </TabsContent>
 
           <TabsContent value="custom">
-            <div className="py-4 space-y-4">
+            <div className="py-3 space-y-3">
               <div className="flex flex-col gap-2">
                 <label htmlFor="custom-color" className="text-sm font-medium">
                   Selecciona un color personalizado
