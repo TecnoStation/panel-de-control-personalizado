@@ -31,6 +31,12 @@ export const ThemeCustomizer = () => {
     if (savedGradients) {
       setCustomGradients(JSON.parse(savedGradients));
     }
+    
+    // Establecer un color inicial
+    if (!themeManager.selectedColor) {
+      themeManager.setSelectedColor(colors[0]);
+      themeManager.changeTheme(colors[0]);
+    }
   }, []);
 
   const handleCustomColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,6 +99,11 @@ export const ThemeCustomizer = () => {
     }
   };
 
+  const getCurrentGradient = () => {
+    if (!themeManager.selectedColor) return undefined;
+    return 'value' in themeManager.selectedColor ? themeManager.selectedColor.value : undefined;
+  };
+
   const allGradients = [...gradients, ...customGradients];
 
   return (
@@ -146,7 +157,7 @@ export const ThemeCustomizer = () => {
               <GradientCustomizer 
                 onGradientChange={handleCustomGradient}
                 onSaveGradient={handleSaveGradient}
-                currentGradient={'value' in themeManager.selectedColor ? themeManager.selectedColor.value : undefined}
+                currentGradient={getCurrentGradient()}
               />
             </TabsContent>
           </Tabs>
