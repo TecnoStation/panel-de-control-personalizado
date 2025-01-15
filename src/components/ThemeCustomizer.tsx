@@ -33,37 +33,38 @@ export const ThemeCustomizer = () => {
   const [customGradients, setCustomGradients] = useState<ColorOption[]>([]);
   const themeManager = useThemeManager();
 
-  // Garantizar que themeManager y selectedColor estén disponibles
+  // Verificación temprana de themeManager
   if (!themeManager) {
     console.error("ThemeManager no está disponible");
     return null;
   }
 
   useEffect(() => {
-    try {
-      // Cargar gradientes personalizados
-      const savedGradients = localStorage.getItem(CUSTOM_GRADIENTS_KEY);
-      if (savedGradients) {
-        setCustomGradients(JSON.parse(savedGradients));
-      }
+    const initializeTheme = () => {
+      try {
+        // Cargar gradientes personalizados
+        const savedGradients = localStorage.getItem(CUSTOM_GRADIENTS_KEY);
+        if (savedGradients) {
+          setCustomGradients(JSON.parse(savedGradients));
+        }
 
-      // Garantizar un color inicial
-      if (!themeManager.selectedColor) {
-        const initialColor = colors[0] || DEFAULT_COLOR;
-        themeManager.setSelectedColor?.(initialColor);
-        themeManager.changeTheme?.(initialColor);
+        // Garantizar un color inicial
+        if (!themeManager.selectedColor) {
+          const initialColor = colors[0] || DEFAULT_COLOR;
+          themeManager.setSelectedColor(initialColor);
+          themeManager.changeTheme(initialColor);
+        }
+      } catch (error) {
+        console.error("Error initializing theme:", error);
+        themeManager.setSelectedColor(DEFAULT_COLOR);
+        themeManager.changeTheme(DEFAULT_COLOR);
       }
-    } catch (error) {
-      console.error("Error initializing theme:", error);
-      // En caso de error, usar el color por defecto
-      themeManager.setSelectedColor?.(DEFAULT_COLOR);
-      themeManager.changeTheme?.(DEFAULT_COLOR);
-    }
+    };
+
+    initializeTheme();
   }, [themeManager]);
 
   const handleCustomColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!themeManager.setSelectedColor) return;
-
     const color = e.target.value;
     setCustomColor(color);
     
@@ -108,7 +109,7 @@ export const ThemeCustomizer = () => {
   };
 
   const handleCustomGradient = (gradient: string) => {
-    if (!gradient || !themeManager.setSelectedColor) return;
+    if (!gradient) return;
     
     const newGradient: ColorOption = {
       name: "Gradiente Personalizado",
@@ -118,7 +119,7 @@ export const ThemeCustomizer = () => {
   };
 
   const handleSaveGradient = (gradient: string, name: string) => {
-    if (!gradient || !name || !themeManager.selectedColor) return;
+    if (!gradient || !name) return;
     
     const newGradient: ColorOption = {
       name,
@@ -132,20 +133,19 @@ export const ThemeCustomizer = () => {
   };
 
   const handleThemeChange = () => {
-    if (!themeManager.selectedColor || !themeManager.changeTheme) return;
+    if (!themeManager.selectedColor) return;
     
     themeManager.changeTheme(themeManager.selectedColor);
     setOpen(false);
   };
 
   const getCurrentGradient = (): string | undefined => {
+    if (!themeManager.selectedColor) return undefined;
+    
     const color = themeManager.selectedColor;
+    if (typeof color !== 'object') return undefined;
     
-    // Verificación explícita de null, undefined y tipo
-    if (!color || typeof color !== 'object') return undefined;
-    
-    // Verificación segura de la propiedad 'value'
-    return color && 'value' in color && color.value ? color.value : undefined;
+    return 'value' in color ? color.value : undefined;
   };
 
   const allGradients = [...gradients, ...customGradients];
