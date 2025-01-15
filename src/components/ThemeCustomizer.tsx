@@ -32,9 +32,9 @@ export const ThemeCustomizer = () => {
       setCustomGradients(JSON.parse(savedGradients));
     }
     
-    // Establecer un color inicial si no hay ninguno seleccionado
+    // Asegurar que siempre haya un color seleccionado
+    const defaultColor = colors[0];
     if (!themeManager.selectedColor) {
-      const defaultColor = colors[0];
       themeManager.setSelectedColor(defaultColor);
       themeManager.changeTheme(defaultColor);
     }
@@ -74,13 +74,22 @@ export const ThemeCustomizer = () => {
     }
 
     const hslColor = `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-    themeManager.setSelectedColor({ name: "Personalizado", primary: hslColor, sidebar: hslColor });
+    const newColor: ColorOption = {
+      name: "Personalizado",
+      primary: hslColor,
+      sidebar: hslColor
+    };
+    themeManager.setSelectedColor(newColor);
   };
 
   const handleCustomGradient = (gradient: string) => {
-    if (gradient) {
-      themeManager.setSelectedColor({ name: "Gradiente Personalizado", value: gradient });
-    }
+    if (!gradient) return;
+    
+    const newGradient: ColorOption = {
+      name: "Gradiente Personalizado",
+      value: gradient
+    };
+    themeManager.setSelectedColor(newGradient);
   };
 
   const handleSaveGradient = (gradient: string, name: string) => {
@@ -98,16 +107,22 @@ export const ThemeCustomizer = () => {
   };
 
   const handleThemeChange = () => {
-    if (themeManager.selectedColor) {
-      themeManager.changeTheme(themeManager.selectedColor);
+    const currentColor = themeManager.selectedColor;
+    if (currentColor) {
+      themeManager.changeTheme(currentColor);
       setOpen(false);
     }
   };
 
-  const getCurrentGradient = () => {
+  const getCurrentGradient = (): string | undefined => {
     const color = themeManager.selectedColor;
     if (!color) return undefined;
-    return 'value' in color && color.value ? color.value : undefined;
+    
+    // Verificación segura del tipo
+    if ('value' in color && typeof color.value === 'string') {
+      return color.value;
+    }
+    return undefined;
   };
 
   const allGradients = [...gradients, ...customGradients];
