@@ -20,33 +20,40 @@ import { ColorOption } from "./theme/types";
 
 const CUSTOM_GRADIENTS_KEY = "custom-gradients";
 
+// Definir un color por defecto
+const DEFAULT_COLOR: ColorOption = {
+  name: "Default",
+  primary: "267 77% 74%",
+  sidebar: "267 77% 74%"
+};
+
 export const ThemeCustomizer = () => {
   const [open, setOpen] = useState(false);
   const [customColor, setCustomColor] = useState("#9b87f5");
   const [customGradients, setCustomGradients] = useState<ColorOption[]>([]);
   const themeManager = useThemeManager();
 
-  // Inicializar el tema con un color por defecto
   useEffect(() => {
-    const savedGradients = localStorage.getItem(CUSTOM_GRADIENTS_KEY);
-    if (savedGradients) {
-      setCustomGradients(JSON.parse(savedGradients));
-    }
+    try {
+      const savedGradients = localStorage.getItem(CUSTOM_GRADIENTS_KEY);
+      if (savedGradients) {
+        setCustomGradients(JSON.parse(savedGradients));
+      }
 
-    // Asegurar que siempre haya un color seleccionado
-    const defaultColor = colors[0] || {
-      name: "Default",
-      primary: "0 0% 0%",
-      sidebar: "0 0% 0%"
-    };
-    
-    if (!themeManager.selectedColor) {
-      themeManager.setSelectedColor(defaultColor);
-      themeManager.changeTheme(defaultColor);
+      // Asegurar que siempre haya un color seleccionado
+      if (!themeManager?.selectedColor) {
+        const initialColor = colors[0] || DEFAULT_COLOR;
+        themeManager?.setSelectedColor?.(initialColor);
+        themeManager?.changeTheme?.(initialColor);
+      }
+    } catch (error) {
+      console.error("Error initializing theme:", error);
     }
-  }, []);
+  }, [themeManager]);
 
   const handleCustomColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!themeManager?.setSelectedColor) return;
+
     const color = e.target.value;
     setCustomColor(color);
     
@@ -86,13 +93,11 @@ export const ThemeCustomizer = () => {
       sidebar: hslColor
     };
     
-    if (themeManager && typeof themeManager.setSelectedColor === 'function') {
-      themeManager.setSelectedColor(newColor);
-    }
+    themeManager.setSelectedColor(newColor);
   };
 
   const handleCustomGradient = (gradient: string) => {
-    if (!gradient || !themeManager || typeof themeManager.setSelectedColor !== 'function') return;
+    if (!gradient || !themeManager?.setSelectedColor) return;
     
     const newGradient: ColorOption = {
       name: "Gradiente Personalizado",
@@ -102,7 +107,7 @@ export const ThemeCustomizer = () => {
   };
 
   const handleSaveGradient = (gradient: string, name: string) => {
-    if (!gradient || !name || !themeManager) return;
+    if (!gradient || !name || !themeManager?.selectedColor) return;
     
     const newGradient: ColorOption = {
       name,
@@ -116,17 +121,17 @@ export const ThemeCustomizer = () => {
   };
 
   const handleThemeChange = () => {
-    if (!themeManager || !themeManager.selectedColor) return;
+    if (!themeManager?.selectedColor || !themeManager?.changeTheme) return;
     
     themeManager.changeTheme(themeManager.selectedColor);
     setOpen(false);
   };
 
   const getCurrentGradient = (): string | undefined => {
-    if (!themeManager || !themeManager.selectedColor) return undefined;
+    const color = themeManager?.selectedColor;
+    if (!color) return undefined;
     
-    const color = themeManager.selectedColor;
-    return typeof color === 'object' && color !== null && 'value' in color ? color.value : undefined;
+    return 'value' in color ? color.value : undefined;
   };
 
   const allGradients = [...gradients, ...customGradients];
