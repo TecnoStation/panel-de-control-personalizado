@@ -32,10 +32,11 @@ export const ThemeCustomizer = () => {
       setCustomGradients(JSON.parse(savedGradients));
     }
     
-    // Establecer un color inicial
+    // Establecer un color inicial si no hay ninguno seleccionado
     if (!themeManager.selectedColor) {
-      themeManager.setSelectedColor(colors[0]);
-      themeManager.changeTheme(colors[0]);
+      const defaultColor = colors[0];
+      themeManager.setSelectedColor(defaultColor);
+      themeManager.changeTheme(defaultColor);
     }
   }, []);
 
@@ -77,10 +78,14 @@ export const ThemeCustomizer = () => {
   };
 
   const handleCustomGradient = (gradient: string) => {
-    themeManager.setSelectedColor({ name: "Gradiente Personalizado", value: gradient });
+    if (gradient) {
+      themeManager.setSelectedColor({ name: "Gradiente Personalizado", value: gradient });
+    }
   };
 
   const handleSaveGradient = (gradient: string, name: string) => {
+    if (!gradient || !name) return;
+    
     const newGradient: ColorOption = {
       name,
       value: gradient,
@@ -100,8 +105,9 @@ export const ThemeCustomizer = () => {
   };
 
   const getCurrentGradient = () => {
-    if (!themeManager.selectedColor) return undefined;
-    return 'value' in themeManager.selectedColor ? themeManager.selectedColor.value : undefined;
+    const color = themeManager.selectedColor;
+    if (!color) return undefined;
+    return 'value' in color && color.value ? color.value : undefined;
   };
 
   const allGradients = [...gradients, ...customGradients];
