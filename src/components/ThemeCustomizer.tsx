@@ -20,7 +20,7 @@ import { ColorOption } from "./theme/types";
 
 const CUSTOM_GRADIENTS_KEY = "custom-gradients";
 
-// Definir un color por defecto
+// Color por defecto garantizado
 const DEFAULT_COLOR: ColorOption = {
   name: "Default",
   primary: "267 77% 74%",
@@ -35,12 +35,13 @@ export const ThemeCustomizer = () => {
 
   useEffect(() => {
     try {
+      // Cargar gradientes personalizados
       const savedGradients = localStorage.getItem(CUSTOM_GRADIENTS_KEY);
       if (savedGradients) {
         setCustomGradients(JSON.parse(savedGradients));
       }
 
-      // Asegurar que siempre haya un color seleccionado
+      // Garantizar un color inicial
       if (!themeManager?.selectedColor) {
         const initialColor = colors[0] || DEFAULT_COLOR;
         themeManager?.setSelectedColor?.(initialColor);
@@ -48,6 +49,9 @@ export const ThemeCustomizer = () => {
       }
     } catch (error) {
       console.error("Error initializing theme:", error);
+      // En caso de error, usar el color por defecto
+      themeManager?.setSelectedColor?.(DEFAULT_COLOR);
+      themeManager?.changeTheme?.(DEFAULT_COLOR);
     }
   }, [themeManager]);
 
@@ -57,6 +61,7 @@ export const ThemeCustomizer = () => {
     const color = e.target.value;
     setCustomColor(color);
     
+    // Convertir hex a HSL
     const r = parseInt(color.slice(1, 3), 16) / 255;
     const g = parseInt(color.slice(3, 5), 16) / 255;
     const b = parseInt(color.slice(5, 7), 16) / 255;
@@ -129,9 +134,11 @@ export const ThemeCustomizer = () => {
 
   const getCurrentGradient = (): string | undefined => {
     const color = themeManager?.selectedColor;
-    if (!color) return undefined;
+    // Verificación explícita de null y undefined
+    if (!color || typeof color !== 'object') return undefined;
     
-    return 'value' in color ? color.value : undefined;
+    // Verificación segura de la propiedad 'value'
+    return 'value' in color && color.value ? color.value : undefined;
   };
 
   const allGradients = [...gradients, ...customGradients];
