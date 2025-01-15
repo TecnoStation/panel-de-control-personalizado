@@ -35,7 +35,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="min-h-screen w-full bg-white text-[#1a1f2c]">
+        <div className="w-screen min-h-screen bg-white text-[#1a1f2c]">
           <Toaster />
           <Sonner />
           <BrowserRouter>

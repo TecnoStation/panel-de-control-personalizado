@@ -8,9 +8,13 @@ if (!root) {
   throw new Error('Root element not found');
 }
 
-// Aseguramos que el elemento root tenga un estilo inicial
-root.style.backgroundColor = 'white';
+// Aseguramos que el elemento root ocupe todo el viewport
+root.style.width = '100vw';
 root.style.minHeight = '100vh';
-root.style.width = '100%';
+root.style.margin = '0';
+root.style.padding = '0';
+root.style.backgroundColor = 'white';
+root.style.display = 'block';
+root.style.overflow = 'hidden';
 
 createRoot(root).render(<App />);
