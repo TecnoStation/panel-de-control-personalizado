@@ -26,14 +26,20 @@ export const ThemeCustomizer = () => {
   const [customGradients, setCustomGradients] = useState<ColorOption[]>([]);
   const themeManager = useThemeManager();
 
+  // Inicializar el tema con un color por defecto
   useEffect(() => {
     const savedGradients = localStorage.getItem(CUSTOM_GRADIENTS_KEY);
     if (savedGradients) {
       setCustomGradients(JSON.parse(savedGradients));
     }
-    
+
     // Asegurar que siempre haya un color seleccionado
-    const defaultColor = colors[0];
+    const defaultColor = colors[0] || {
+      name: "Default",
+      primary: "0 0% 0%",
+      sidebar: "0 0% 0%"
+    };
+    
     if (!themeManager.selectedColor) {
       themeManager.setSelectedColor(defaultColor);
       themeManager.changeTheme(defaultColor);
@@ -79,11 +85,14 @@ export const ThemeCustomizer = () => {
       primary: hslColor,
       sidebar: hslColor
     };
-    themeManager.setSelectedColor(newColor);
+    
+    if (themeManager && typeof themeManager.setSelectedColor === 'function') {
+      themeManager.setSelectedColor(newColor);
+    }
   };
 
   const handleCustomGradient = (gradient: string) => {
-    if (!gradient) return;
+    if (!gradient || !themeManager || typeof themeManager.setSelectedColor !== 'function') return;
     
     const newGradient: ColorOption = {
       name: "Gradiente Personalizado",
@@ -93,7 +102,7 @@ export const ThemeCustomizer = () => {
   };
 
   const handleSaveGradient = (gradient: string, name: string) => {
-    if (!gradient || !name) return;
+    if (!gradient || !name || !themeManager) return;
     
     const newGradient: ColorOption = {
       name,
@@ -107,22 +116,17 @@ export const ThemeCustomizer = () => {
   };
 
   const handleThemeChange = () => {
-    const currentColor = themeManager.selectedColor;
-    if (currentColor) {
-      themeManager.changeTheme(currentColor);
-      setOpen(false);
-    }
+    if (!themeManager || !themeManager.selectedColor) return;
+    
+    themeManager.changeTheme(themeManager.selectedColor);
+    setOpen(false);
   };
 
   const getCurrentGradient = (): string | undefined => {
-    const color = themeManager.selectedColor;
-    if (!color) return undefined;
+    if (!themeManager || !themeManager.selectedColor) return undefined;
     
-    // Verificación segura del tipo
-    if ('value' in color && typeof color.value === 'string') {
-      return color.value;
-    }
-    return undefined;
+    const color = themeManager.selectedColor;
+    return typeof color === 'object' && color !== null && 'value' in color ? color.value : undefined;
   };
 
   const allGradients = [...gradients, ...customGradients];
@@ -185,7 +189,7 @@ export const ThemeCustomizer = () => {
           <div className="flex justify-end mt-4">
             <Button 
               onClick={handleThemeChange}
-              disabled={!themeManager.selectedColor}
+              disabled={!themeManager?.selectedColor}
               className="gradient-bg"
             >
               Elegir color
