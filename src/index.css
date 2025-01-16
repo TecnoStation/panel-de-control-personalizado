@@ -100,7 +100,8 @@
   }
 
   /* Aseguramos que el botón gradient-bg tenga texto blanco en modo oscuro */
-  .dark .gradient-bg {
+  .dark .gradient-bg,
+  .dark .button-gradient {
     color: white !important;
   }
 }
