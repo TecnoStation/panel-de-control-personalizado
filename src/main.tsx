@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import './index.css'
 
@@ -17,4 +18,8 @@ root.style.backgroundColor = 'white';
 root.style.display = 'block';
 root.style.overflow = 'hidden';
 
-createRoot(root).render(<App />);
+createRoot(root).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
