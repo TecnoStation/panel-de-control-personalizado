@@ -36,7 +36,7 @@ export const navItems = [
     icon: FileText,
     label: "Páginas",
     subItems: [
-      { label: "Nueva Página" },
+      { label: "Nueva Página", path: "/nueva-pagina" },
       { label: "Lista de Páginas" }
     ]
   },
