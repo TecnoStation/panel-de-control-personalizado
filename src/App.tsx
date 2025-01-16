@@ -8,8 +8,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import "./App.css";
 
-// Lazy load the Index page
+// Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
+const NewPage = lazy(() => import("./pages/NewPage"));
 
 // Configure React Query
 const queryClient = new QueryClient({
@@ -53,6 +54,7 @@ const App = () => {
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<Index />} />
+                <Route path="/nueva-pagina" element={<NewPage />} />
               </Routes>
             </Suspense>
           </BrowserRouter>
