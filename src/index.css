@@ -108,6 +108,25 @@
   @apply bg-white/10 text-white;
 }
 
+/* Collapsible styles */
+.collapsible-chevron {
+  transform: rotate(0deg);
+}
+
+[data-state="open"] .collapsible-chevron {
+  transform: rotate(180deg);
+}
+
+/* Dropdown styles */
+.DropdownMenuContent {
+  @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg;
+  z-index: 50;
+}
+
+.DropdownMenuItem {
+  @apply px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700;
+}
+
 /* Gradient elements */
 .gradient-bg {
   background-image: var(--theme-gradient, linear-gradient(267deg, #9b87f5 0%, #9b87f5 100%));

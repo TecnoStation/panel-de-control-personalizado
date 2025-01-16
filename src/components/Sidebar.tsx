@@ -23,6 +23,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const navItems = [
   {
@@ -145,29 +150,39 @@ export const Sidebar = () => {
       </SidebarHeader>
       <SidebarContent className="sidebar-gradient flex-1">
         <nav className="flex-1 p-3 space-y-1 custom-scrollbar">
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <div key={item.label}>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="w-full">
-                  <a className={cn("nav-item w-full")}>
-                    <item.icon className="w-5 h-5" />
-                    {item.label}
-                    {item.subItems && <ChevronDown className="ml-auto h-4 w-4" />}
-                  </a>
-                </DropdownMenuTrigger>
-                {item.subItems && (
-                  <DropdownMenuContent className="w-48 ml-6">
-                    {item.subItems.map((subItem) => (
-                      <DropdownMenuItem
-                        key={subItem.label}
-                        className="cursor-pointer"
-                      >
-                        {subItem.label}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                )}
-              </DropdownMenu>
+              {index === 11 && <hr className="my-2 border-white/10" />} {/* Divisor antes de "Productos más vendidos" */}
+              {index === 14 && <hr className="my-2 border-white/10" />} {/* Divisor antes de "Pedidos" */}
+              {item.subItems ? (
+                <Collapsible>
+                  <CollapsibleTrigger className="w-full">
+                    <a className={cn("nav-item w-full")}>
+                      <item.icon className="w-5 h-5" />
+                      {item.label}
+                      <ChevronDown className="ml-auto h-4 w-4 transition-transform duration-200 collapsible-chevron" />
+                    </a>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="ml-6 mt-1 space-y-1 py-1">
+                      {item.subItems.map((subItem) => (
+                        <a
+                          key={subItem.label}
+                          className="nav-item text-sm pl-6"
+                          href="#"
+                        >
+                          {subItem.label}
+                        </a>
+                      ))}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              ) : (
+                <a className={cn("nav-item")}>
+                  <item.icon className="w-5 h-5" />
+                  {item.label}
+                </a>
+              )}
             </div>
           ))}
         </nav>
