@@ -11,18 +11,43 @@ import {
   ListOrdered,
   Link2,
   Heading1,
-  Heading2
+  Heading2,
+  Image as ImageIcon,
+  Code
 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
 }
 
+const fontSizes = ['8', '10', '12', '14', '16', '18', '20', '24', '28', '32', '36', '48'];
+const fontFamilies = [
+  'Arial',
+  'Times New Roman',
+  'Helvetica',
+  'Courier New',
+  'Georgia',
+  'Verdana'
+];
+const colors = [
+  '#000000', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF',
+  '#808080', '#800000', '#808000', '#008000', '#800080', '#008080', '#000080'
+];
+
 export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
+  const [showHtmlSource, setShowHtmlSource] = useState(false);
+  const [htmlSource, setHtmlSource] = useState("");
 
   const execCommand = (command: string, value: string | boolean = false) => {
     document.execCommand(command, false, value ? String(value) : "");
@@ -36,6 +61,52 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
       execCommand("createLink", linkUrl);
       setLinkUrl("");
       setShowLinkInput(false);
+    }
+  };
+
+  const handleFontSizeChange = (size: string) => {
+    execCommand("fontSize", size);
+  };
+
+  const handleFontFamilyChange = (family: string) => {
+    execCommand("fontName", family);
+  };
+
+  const handleColorChange = (color: string) => {
+    execCommand("foreColor", color);
+  };
+
+  const toggleHtmlSource = () => {
+    if (showHtmlSource) {
+      if (editorRef.current) {
+        editorRef.current.innerHTML = htmlSource;
+        onChange(htmlSource);
+      }
+    } else {
+      setHtmlSource(editorRef.current?.innerHTML || "");
+    }
+    setShowHtmlSource(!showHtmlSource);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = `<img src="${event.target?.result}" alt="Uploaded image" style="max-width: 100%; height: auto;" />`;
+        if (editorRef.current) {
+          const selection = window.getSelection();
+          const range = selection?.getRangeAt(0);
+          if (range) {
+            range.deleteContents();
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = img;
+            range.insertNode(tempDiv.firstChild as Node);
+            onChange(editorRef.current.innerHTML);
+          }
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -66,6 +137,53 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         >
           <Underline className="h-4 w-4" />
         </Button>
+        <div className="w-px h-6 bg-border mx-1 my-auto" />
+        
+        <Select onValueChange={handleFontSizeChange}>
+          <SelectTrigger className="w-[100px]">
+            <SelectValue placeholder="Tamaño" />
+          </SelectTrigger>
+          <SelectContent>
+            {fontSizes.map((size) => (
+              <SelectItem key={size} value={size}>
+                {size}px
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select onValueChange={handleFontFamilyChange}>
+          <SelectTrigger className="w-[140px]">
+            <SelectValue placeholder="Fuente" />
+          </SelectTrigger>
+          <SelectContent>
+            {fontFamilies.map((family) => (
+              <SelectItem key={family} value={family}>
+                {family}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select onValueChange={handleColorChange}>
+          <SelectTrigger className="w-[100px]">
+            <SelectValue placeholder="Color" />
+          </SelectTrigger>
+          <SelectContent>
+            {colors.map((color) => (
+              <SelectItem key={color} value={color}>
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-4 h-4 rounded-full border"
+                    style={{ backgroundColor: color }}
+                  />
+                  {color}
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
         <div className="w-px h-6 bg-border mx-1 my-auto" />
         <Button
           variant="ghost"
@@ -134,6 +252,34 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         >
           <Link2 className="h-4 w-4" />
         </Button>
+        
+        <label htmlFor="image-upload">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => document.getElementById('image-upload')?.click()}
+            title="Insertar imagen"
+            type="button"
+          >
+            <ImageIcon className="h-4 w-4" />
+          </Button>
+        </label>
+        <input
+          type="file"
+          id="image-upload"
+          accept="image/*"
+          className="hidden"
+          onChange={handleImageUpload}
+        />
+
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleHtmlSource}
+          title="Ver código fuente"
+        >
+          <Code className="h-4 w-4" />
+        </Button>
       </div>
       
       {showLinkInput && (
@@ -151,13 +297,21 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         </div>
       )}
 
-      <div
-        ref={editorRef}
-        contentEditable
-        className="min-h-[200px] p-4 focus:outline-none"
-        dangerouslySetInnerHTML={{ __html: value }}
-        onInput={(e) => onChange(e.currentTarget.innerHTML)}
-      />
+      {showHtmlSource ? (
+        <textarea
+          className="min-h-[200px] p-4 w-full font-mono text-sm focus:outline-none"
+          value={htmlSource}
+          onChange={(e) => setHtmlSource(e.target.value)}
+        />
+      ) : (
+        <div
+          ref={editorRef}
+          contentEditable
+          className="min-h-[200px] p-4 focus:outline-none"
+          dangerouslySetInnerHTML={{ __html: value }}
+          onInput={(e) => onChange(e.currentTarget.innerHTML)}
+        />
+      )}
     </div>
   );
 };
