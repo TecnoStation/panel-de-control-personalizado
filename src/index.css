@@ -78,12 +78,18 @@
   /* Aseguramos que los textos sean blancos en modo oscuro */
   .dark .DialogContent,
   .dark .DialogTitle,
+  .dark .DialogDescription,
   .dark .Label,
   .dark input,
   .dark select,
   .dark option,
-  .dark button {
+  .dark button,
+  .dark .TabsTrigger {
     color: white !important;
+  }
+
+  .dark .TabsTrigger[data-state="active"] {
+    color: hsl(var(--primary)) !important;
   }
 
   .dark input::placeholder {
