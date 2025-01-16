@@ -9,35 +9,21 @@ const DEFAULT_COLOR: ColorOption = {
   sidebar: "267 77% 74%"
 };
 
-export const useThemeState = (themeManager: any) => {
+export const useThemeState = () => {
   const [open, setOpen] = useState(false);
   const [customColor, setCustomColor] = useState("#9b87f5");
   const [customGradients, setCustomGradients] = useState<ColorOption[]>([]);
 
   useEffect(() => {
-    if (!themeManager) return;
-
-    const initializeTheme = () => {
-      try {
-        const savedGradients = localStorage.getItem(CUSTOM_GRADIENTS_KEY);
-        if (savedGradients) {
-          setCustomGradients(JSON.parse(savedGradients));
-        }
-
-        if (!themeManager.selectedColor) {
-          const initialColor = colors[0] || DEFAULT_COLOR;
-          themeManager.setSelectedColor(initialColor);
-          themeManager.changeTheme(initialColor);
-        }
-      } catch (error) {
-        console.error("Error initializing theme:", error);
-        themeManager.setSelectedColor(DEFAULT_COLOR);
-        themeManager.changeTheme(DEFAULT_COLOR);
+    try {
+      const savedGradients = localStorage.getItem(CUSTOM_GRADIENTS_KEY);
+      if (savedGradients) {
+        setCustomGradients(JSON.parse(savedGradients));
       }
-    };
-
-    initializeTheme();
-  }, [themeManager]);
+    } catch (error) {
+      console.error("Error loading saved gradients:", error);
+    }
+  }, []);
 
   return {
     open,
