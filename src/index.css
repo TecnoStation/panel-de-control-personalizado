@@ -98,6 +98,11 @@
   .dark input::placeholder {
     color: rgba(255, 255, 255, 0.7) !important;
   }
+
+  /* Aseguramos que el botón gradient-bg tenga texto blanco en modo oscuro */
+  .dark .gradient-bg {
+    color: white !important;
+  }
 }
 
 /* Navigation styles */
