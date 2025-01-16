@@ -93,8 +93,8 @@ export const ThemeCustomizer = () => {
   };
 
   const getCurrentGradient = (): string | undefined => {
+    if (!themeManager.selectedColor) return undefined;
     const color = themeManager.selectedColor;
-    if (!color || typeof color !== 'object') return undefined;
     return 'value' in color ? color.value : undefined;
   };
 
