@@ -24,26 +24,14 @@ export const navItems = [
   {
     icon: FileText,
     label: "Noticias",
-    subItems: [
-      { label: "Crear Noticia" },
-      { label: "Lista de Noticias" }
-    ]
   },
   {
     icon: Package,
     label: "Productos",
-    subItems: [
-      { label: "Alta de Productos" },
-      { label: "Lista de Productos" }
-    ]
   },
   {
     icon: FileText,
     label: "Páginas",
-    subItems: [
-      { label: "Nueva Página", path: "/nueva-pagina" },
-      { label: "Lista de Páginas" }
-    ]
   },
   {
     icon: FileText,
@@ -68,10 +56,6 @@ export const navItems = [
   {
     icon: Settings,
     label: "Problemas y Soluciones",
-    subItems: [
-      { label: "Nuevo Apartado" },
-      { label: "Lista de Apartados" }
-    ]
   },
   {
     icon: Package,
