@@ -75,7 +75,6 @@
     color: #1a1f2c;
   }
 
-  /* Aseguramos que los textos sean blancos en modo oscuro */
   .dark .DialogContent,
   .dark .DialogTitle,
   .dark .DialogDescription,
@@ -123,10 +122,14 @@
 }
 
 /* Aseguramos que el texto sea blanco en modo oscuro para los botones con gradiente */
-.dark .gradient-bg,
-.dark .button-gradient,
 .dark button.gradient-bg,
 .dark button.button-gradient {
+  color: white !important;
+}
+
+/* Regla específica para el botón de elegir color */
+button.gradient-bg,
+button.button-gradient {
   color: white !important;
 }
 
