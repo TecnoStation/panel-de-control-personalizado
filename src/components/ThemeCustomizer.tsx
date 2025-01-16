@@ -96,7 +96,12 @@ export const ThemeCustomizer = () => {
     const color = themeManager.selectedColor;
     if (!color) return undefined;
     
-    return 'value' in color ? color.value : undefined;
+    // Type guard para verificar si el color tiene la propiedad 'value'
+    const isGradientColor = (color: ColorOption): color is ColorOption & { value: string } => {
+      return 'value' in color;
+    };
+    
+    return isGradientColor(color) ? color.value : undefined;
   };
 
   const allGradients = [...gradients, ...customGradients];
