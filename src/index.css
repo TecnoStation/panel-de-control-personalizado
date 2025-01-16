@@ -84,7 +84,10 @@
   .dark select,
   .dark option,
   .dark button,
-  .dark .TabsTrigger {
+  .dark .TabsTrigger,
+  .dark label,
+  .dark .dialog-text,
+  .dark div {
     color: white !important;
   }
 
