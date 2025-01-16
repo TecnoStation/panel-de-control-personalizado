@@ -13,6 +13,15 @@ export const ThemeCustomizer = () => {
   
   // Verificación temprana si themeManager no está disponible
   if (!themeManager) {
+    console.log('ThemeManager no está disponible');
+    return null;
+  }
+
+  const themeState = useThemeState();
+  
+  // Verificación temprana si themeState no está disponible
+  if (!themeState) {
+    console.log('ThemeState no está disponible');
     return null;
   }
 
@@ -24,9 +33,11 @@ export const ThemeCustomizer = () => {
     customGradients,
     setCustomGradients,
     CUSTOM_GRADIENTS_KEY,
-  } = useThemeState();
+  } = themeState;
 
   const handleCustomColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target) return;
+    
     const color = e.target.value;
     setCustomColor(color);
     
@@ -97,11 +108,11 @@ export const ThemeCustomizer = () => {
     if (!color) return undefined;
     
     // Type guard para verificar si el color tiene la propiedad 'value'
-    const isGradientColor = (color: ColorOption): color is ColorOption & { value: string } => {
-      return 'value' in color;
-    };
+    if (typeof color === 'object' && color !== null && 'value' in color) {
+      return color.value;
+    }
     
-    return isGradientColor(color) ? color.value : undefined;
+    return undefined;
   };
 
   const allGradients = [...gradients, ...customGradients];

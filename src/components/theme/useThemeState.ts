@@ -10,8 +10,8 @@ const DEFAULT_COLOR: ColorOption = {
 };
 
 export const useThemeState = () => {
-  const [open, setOpen] = useState(false);
-  const [customColor, setCustomColor] = useState("#9b87f5");
+  const [open, setOpen] = useState<boolean>(false);
+  const [customColor, setCustomColor] = useState<string>("#9b87f5");
   const [customGradients, setCustomGradients] = useState<ColorOption[]>([]);
 
   useEffect(() => {
@@ -22,6 +22,7 @@ export const useThemeState = () => {
       }
     } catch (error) {
       console.error("Error loading saved gradients:", error);
+      setCustomGradients([]);
     }
   }, []);
 
