@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { ColorOption } from './types';
 
+const THEME_COLOR_KEY = 'theme-color';
+
 export const useThemeManager = () => {
   const { toast } = useToast();
-  const [selectedColor, setSelectedColor] = useState<ColorOption | null>(null);
+  const [selectedColor, setSelectedColor] = useState<ColorOption | null>(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem(THEME_COLOR_KEY);
+      return savedTheme ? JSON.parse(savedTheme) : null;
+    }
+    return null;
+  });
 
   const changeTheme = (color: ColorOption) => {
     const root = document.documentElement;
@@ -71,6 +79,9 @@ export const useThemeManager = () => {
     root.style.setProperty("--sidebar-accent-foreground", "0 0% 100%");
     root.style.setProperty("--sidebar-border", "0 0% 100% / 0.1");
     
+    // Guardar el tema en localStorage
+    localStorage.setItem(THEME_COLOR_KEY, JSON.stringify(color));
+    
     toast({
       title: "Tema actualizado",
       description: "El color del tema ha sido cambiado exitosamente.",
@@ -79,6 +90,13 @@ export const useThemeManager = () => {
 
     setSelectedColor(color);
   };
+
+  // Aplicar el tema guardado al cargar la página
+  useEffect(() => {
+    if (selectedColor) {
+      changeTheme(selectedColor);
+    }
+  }, []);
 
   return {
     selectedColor,
