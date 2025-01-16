@@ -175,3 +175,19 @@ button.button-gradient {
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,0.2) transparent;
 }
+
+/* Number styles */
+.number-gradient {
+  @apply text-primary;
+  background: var(--theme-gradient, linear-gradient(267deg, #9b87f5 0%, #9b87f5 100%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .number-gradient {
+  background: var(--theme-gradient, linear-gradient(267deg, #9b87f5 0%, #9b87f5 100%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
