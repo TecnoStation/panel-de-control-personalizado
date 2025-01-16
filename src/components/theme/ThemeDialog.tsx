@@ -8,7 +8,6 @@ import { GradientPicker } from "./GradientPicker";
 import { CustomColorPicker } from "./CustomColorPicker";
 import { GradientCustomizer } from "./GradientCustomizer";
 import { ColorOption } from "./types";
-import { useDarkMode } from "@/hooks/useDarkMode";
 
 interface ThemeDialogProps {
   open: boolean;
@@ -23,6 +22,8 @@ interface ThemeDialogProps {
   allGradients: ColorOption[];
   colors: ColorOption[];
   currentGradient?: string;
+  isDarkMode: boolean;
+  onDarkModeChange: (value: boolean) => void;
 }
 
 export const ThemeDialog = ({
@@ -38,9 +39,9 @@ export const ThemeDialog = ({
   allGradients,
   colors,
   currentGradient,
+  isDarkMode,
+  onDarkModeChange,
 }: ThemeDialogProps) => {
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
-
   return (
     <DialogContent className="sm:max-w-md">
       <DialogHeader>
@@ -51,7 +52,7 @@ export const ThemeDialog = ({
         <Switch
           id="dark-mode"
           checked={isDarkMode}
-          onCheckedChange={toggleDarkMode}
+          onCheckedChange={onDarkModeChange}
         />
         <Label htmlFor="dark-mode">Modo oscuro</Label>
       </div>
