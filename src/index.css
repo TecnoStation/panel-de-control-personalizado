@@ -104,6 +104,11 @@
   .dark .button-gradient {
     color: white !important;
   }
+
+  /* Nuevo: Regla específica para el botón de elegir color */
+  .dark button.gradient-bg {
+    color: white !important;
+  }
 }
 
 /* Navigation styles */
