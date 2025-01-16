@@ -74,6 +74,21 @@
     background-color: white;
     color: #1a1f2c;
   }
+
+  /* Aseguramos que los textos sean blancos en modo oscuro */
+  .dark .DialogContent,
+  .dark .DialogTitle,
+  .dark .Label,
+  .dark input,
+  .dark select,
+  .dark option,
+  .dark button {
+    color: white !important;
+  }
+
+  .dark input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
 }
 
 /* Navigation styles */
