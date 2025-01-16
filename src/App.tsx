@@ -42,7 +42,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <SidebarProvider>
-          <div className="flex w-full min-h-screen bg-background text-foreground transition-colors">
+          <div className={`flex w-full min-h-screen bg-background text-foreground transition-colors ${isDarkMode ? 'dark' : ''}`}>
             <Sidebar />
             <div className="flex-1">
               <Toaster />

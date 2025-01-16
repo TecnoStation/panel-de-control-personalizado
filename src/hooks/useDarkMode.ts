@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 
 export const useDarkMode = () => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const savedMode = localStorage.getItem('darkMode');
-      return savedMode === 'true' || document.documentElement.classList.contains('dark');
-    }
-    return false;
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    // Solo ejecutar este código en el cliente
+    if (typeof window === 'undefined') return false;
+    
+    const savedMode = localStorage.getItem('darkMode');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    return savedMode ? savedMode === 'true' : prefersDark;
   });
 
   useEffect(() => {
@@ -20,9 +22,5 @@ export const useDarkMode = () => {
     }
   }, [isDarkMode]);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(prev => !prev);
-  };
-
-  return { isDarkMode, setIsDarkMode, toggleDarkMode };
+  return { isDarkMode, setIsDarkMode };
 };
