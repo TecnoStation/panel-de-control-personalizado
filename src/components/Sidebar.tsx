@@ -152,8 +152,8 @@ export const Sidebar = () => {
         <nav className="flex-1 p-3 space-y-1 custom-scrollbar">
           {navItems.map((item, index) => (
             <div key={item.label}>
-              {index === 11 && <hr className="my-2 border-white/10" />} {/* Divisor antes de "Productos más vendidos" */}
-              {index === 14 && <hr className="my-2 border-white/10" />} {/* Divisor antes de "Pedidos" */}
+              {index === 11 && <hr className="my-2 border-white" />} {/* Divisor blanco antes de "Productos más vendidos" */}
+              {index === 14 && <hr className="my-2 border-white" />} {/* Divisor blanco antes de "Pedidos" */}
               {item.subItems ? (
                 <Collapsible>
                   <CollapsibleTrigger className="w-full">
