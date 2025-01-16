@@ -1,29 +1,32 @@
-import { useState } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import { useState } from "react";
+import { Editor } from "@tinymce/tinymce-react";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 
 const NewPage = () => {
-  const [title, setTitle] = useState('');
-  const [slug, setSlug] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
+  const [content, setContent] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Aquí iría la lógica para guardar la página
-    console.log({ title, slug, content });
+  const generateSlug = (text: string) => {
+    return text
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-");
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
-    // Genera el slug automáticamente desde el título
-    setSlug(newTitle.toLowerCase()
-      .replace(/ /g, '-')
-      .replace(/[^\w-]+/g, '')
-    );
+    setSlug(generateSlug(newTitle));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Aquí iría la lógica para guardar la página
+    console.log({ title, slug, content });
   };
 
   return (
@@ -48,7 +51,6 @@ const NewPage = () => {
               value={title}
               onChange={handleTitleChange}
               placeholder="Ingrese el título de la página"
-              className="w-full"
             />
           </div>
 
@@ -60,8 +62,7 @@ const NewPage = () => {
                 id="slug"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
-                placeholder="nombre-de-pagina"
-                className="flex-1"
+                placeholder="url-de-la-pagina"
               />
             </div>
           </div>
@@ -81,11 +82,10 @@ const NewPage = () => {
                 toolbar: 'undo redo | blocks | ' +
                   'bold italic forecolor | alignleft aligncenter ' +
                   'alignright alignjustify | bullist numlist outdent indent | ' +
-                  'removeformat | help',
-                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                  'removeformat | help'
               }}
               value={content}
-              onEditorChange={(newContent) => setContent(newContent)}
+              onEditorChange={setContent}
             />
           </div>
 
