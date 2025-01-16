@@ -11,7 +11,6 @@ import { ColorOption } from "./theme/types";
 export const ThemeCustomizer = () => {
   const themeManager = useThemeManager();
   
-  // Verificación temprana si themeManager no está disponible
   if (!themeManager) {
     console.log('ThemeManager no está disponible');
     return null;
@@ -19,7 +18,6 @@ export const ThemeCustomizer = () => {
 
   const themeState = useThemeState();
   
-  // Verificación temprana si themeState no está disponible
   if (!themeState) {
     console.log('ThemeState no está disponible');
     return null;
@@ -105,10 +103,10 @@ export const ThemeCustomizer = () => {
 
   const getCurrentGradient = (): string | undefined => {
     const color = themeManager.selectedColor;
-    if (!color) return undefined;
+    if (!color || typeof color !== 'object') return undefined;
     
-    // Type guard para verificar si el color tiene la propiedad 'value'
-    if (typeof color === 'object' && color !== null && 'value' in color) {
+    // Verificación más segura del tipo y la propiedad value
+    if ('value' in color && typeof color.value === 'string') {
       return color.value;
     }
     
