@@ -147,23 +147,27 @@ export const Sidebar = () => {
         <nav className="flex-1 p-3 space-y-1 custom-scrollbar">
           {navItems.map((item) => (
             <div key={item.label}>
-              <a href="#" className={cn("nav-item")}>
-                <item.icon className="w-5 h-5" />
-                {item.label}
-              </a>
-              {item.subItems && (
-                <div className="ml-6 mt-1 space-y-1">
-                  {item.subItems.map((subItem) => (
-                    <a
-                      key={subItem.label}
-                      href="#"
-                      className="nav-item text-sm pl-6"
-                    >
-                      {subItem.label}
-                    </a>
-                  ))}
-                </div>
-              )}
+              <DropdownMenu>
+                <DropdownMenuTrigger className="w-full">
+                  <a className={cn("nav-item w-full")}>
+                    <item.icon className="w-5 h-5" />
+                    {item.label}
+                    {item.subItems && <ChevronDown className="ml-auto h-4 w-4" />}
+                  </a>
+                </DropdownMenuTrigger>
+                {item.subItems && (
+                  <DropdownMenuContent className="w-48 ml-6">
+                    {item.subItems.map((subItem) => (
+                      <DropdownMenuItem
+                        key={subItem.label}
+                        className="cursor-pointer"
+                      >
+                        {subItem.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                )}
+              </DropdownMenu>
             </div>
           ))}
         </nav>
