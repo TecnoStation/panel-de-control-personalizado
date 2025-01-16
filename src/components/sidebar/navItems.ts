@@ -4,10 +4,15 @@ import {
   Package, 
   Settings, 
   Users, 
-  MessageSquare 
+  MessageSquare,
+  Menu
 } from "lucide-react";
 
 export const navItems = [
+  {
+    icon: Menu,
+    label: "Menu",
+  },
   {
     icon: List,
     label: "Categorías",
