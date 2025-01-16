@@ -1,11 +1,14 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { ColorPicker } from "./ColorPicker";
 import { GradientPicker } from "./GradientPicker";
 import { CustomColorPicker } from "./CustomColorPicker";
 import { GradientCustomizer } from "./GradientCustomizer";
 import { ColorOption } from "./types";
+import { useTheme } from "./ThemeContext";
 
 interface ThemeDialogProps {
   open: boolean;
@@ -36,11 +39,28 @@ export const ThemeDialog = ({
   colors,
   currentGradient,
 }: ThemeDialogProps) => {
+  const toggleDarkMode = () => {
+    const root = document.documentElement;
+    root.classList.toggle('dark');
+  };
+
+  const isDarkMode = document.documentElement.classList.contains('dark');
+
   return (
     <DialogContent className="sm:max-w-md">
       <DialogHeader>
         <DialogTitle>Personalizar tema</DialogTitle>
       </DialogHeader>
+
+      <div className="flex items-center space-x-2 mb-4 py-2 border-b">
+        <Switch
+          id="dark-mode"
+          checked={isDarkMode}
+          onCheckedChange={toggleDarkMode}
+        />
+        <Label htmlFor="dark-mode">Modo oscuro</Label>
+      </div>
+
       <Tabs defaultValue="solid">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="solid">Sólidos</TabsTrigger>

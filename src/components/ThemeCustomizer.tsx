@@ -1,26 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { ThemeProvider } from "./theme/ThemeContext";
 import { useThemeManager } from "./theme/ThemeManager";
 import { useThemeState } from "./theme/useThemeState";
 import { colors, gradients } from "./theme/colorData";
-import { ThemeControls } from "./theme/ThemeControls";
+import { ThemeDialog } from "./theme/ThemeDialog";
 import { useThemeActions } from "./theme/hooks/useThemeActions";
 import { useGradientUtils } from "./theme/hooks/useGradientUtils";
+import { useDarkMode } from "@/hooks/useDarkMode";
 
 export const ThemeCustomizer = () => {
   const themeManager = useThemeManager();
-  
-  if (!themeManager) {
-    console.log('ThemeManager no está disponible');
-    return null;
-  }
-
   const themeState = useThemeState();
+  const { isDarkMode, setIsDarkMode } = useDarkMode();
   
-  if (!themeState) {
-    console.log('ThemeState no está disponible');
+  if (!themeManager || !themeState) {
     return null;
   }
 
@@ -57,23 +52,20 @@ export const ThemeCustomizer = () => {
             <Settings className="h-5 w-5" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Personalizar tema</DialogTitle>
-          </DialogHeader>
-          <ThemeControls
-            selectedColor={themeManager.selectedColor}
-            onColorSelect={themeManager.setSelectedColor}
-            customColor={customColor}
-            onCustomColorChange={(e) => handleCustomColorChange(e, setCustomColor, themeManager.setSelectedColor)}
-            onGradientChange={(gradient) => handleCustomGradient(gradient, themeManager.setSelectedColor)}
-            onSaveGradient={(gradient, name) => handleSaveGradient(gradient, name, customGradients, setCustomGradients, CUSTOM_GRADIENTS_KEY)}
-            onThemeChange={handleThemeChange}
-            allGradients={allGradients}
-            colors={colors}
-            currentGradient={getCurrentGradient()}
-          />
-        </DialogContent>
+        <ThemeDialog
+          open={open}
+          onOpenChange={setOpen}
+          selectedColor={themeManager.selectedColor}
+          onColorSelect={themeManager.setSelectedColor}
+          customColor={customColor}
+          onCustomColorChange={(e) => handleCustomColorChange(e, setCustomColor, themeManager.setSelectedColor)}
+          onGradientChange={(gradient) => handleCustomGradient(gradient, themeManager.setSelectedColor)}
+          onSaveGradient={(gradient, name) => handleSaveGradient(gradient, name, customGradients, setCustomGradients, CUSTOM_GRADIENTS_KEY)}
+          onThemeChange={handleThemeChange}
+          allGradients={allGradients}
+          colors={colors}
+          currentGradient={getCurrentGradient()}
+        />
       </Dialog>
     </ThemeProvider>
   );
