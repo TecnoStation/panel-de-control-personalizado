@@ -98,17 +98,6 @@
   .dark input::placeholder {
     color: rgba(255, 255, 255, 0.7) !important;
   }
-
-  /* Aseguramos que el botón gradient-bg tenga texto blanco en modo oscuro */
-  .dark .gradient-bg,
-  .dark .button-gradient {
-    color: white !important;
-  }
-
-  /* Nuevo: Regla específica para el botón de elegir color */
-  .dark button.gradient-bg {
-    color: white !important;
-  }
 }
 
 /* Navigation styles */
@@ -123,7 +112,7 @@
 /* Gradient elements */
 .gradient-bg {
   background-image: var(--theme-gradient, linear-gradient(267deg, #9b87f5 0%, #9b87f5 100%));
-  color: white;
+  color: white !important;
   transition: all 0.2s ease-in-out;
 }
 
@@ -133,18 +122,18 @@
   transition: all 0.2s ease-in-out;
 }
 
+/* Aseguramos que el texto sea blanco en modo oscuro para los botones con gradiente */
+.dark .gradient-bg,
+.dark .button-gradient,
+.dark button.gradient-bg,
+.dark button.button-gradient {
+  color: white !important;
+}
+
 .gradient-bg:hover,
 .button-gradient:hover {
   opacity: 0.9;
   filter: brightness(1.1);
-}
-
-.number-gradient {
-  background-image: var(--theme-gradient, linear-gradient(267deg, #9b87f5 0%, #9b87f5 100%));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
 }
 
 /* Card styles */
