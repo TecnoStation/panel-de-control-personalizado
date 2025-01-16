@@ -63,10 +63,20 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         ? linkUrl 
         : `https://${linkUrl}`;
       
+      // Aseguramos que el editor tenga el foco
+      if (editorRef.current) {
+        editorRef.current.focus();
+      }
+
       // Verificamos si hay texto seleccionado
       const selection = window.getSelection();
       if (selection && selection.toString().length > 0) {
-        execCommand("createLink", url);
+        document.execCommand('createLink', false, url);
+        // Agregamos target="_blank" al enlace creado
+        const anchor = selection.anchorNode?.parentElement;
+        if (anchor?.tagName === 'A') {
+          anchor.setAttribute('target', '_blank');
+        }
       } else {
         // Si no hay texto seleccionado, insertamos el enlace con la URL como texto
         const link = `<a href="${url}" target="_blank">${url}</a>`;
@@ -75,6 +85,11 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
       
       setLinkUrl("");
       setShowLinkInput(false);
+      
+      // Actualizamos el contenido
+      if (editorRef.current) {
+        onChange(editorRef.current.innerHTML);
+      }
     }
   };
 
@@ -141,11 +156,21 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
     if (editorRef.current) {
       editorRef.current.focus();
       
+      // Guardamos la selección actual
+      const selection = window.getSelection();
+      const range = selection?.getRangeAt(0);
+      
       // Ejecutamos el comando correspondiente
       if (type === 'ordered') {
         document.execCommand('insertOrderedList', false);
       } else {
         document.execCommand('insertUnorderedList', false);
+      }
+      
+      // Restauramos la selección
+      if (selection && range) {
+        selection.removeAllRanges();
+        selection.addRange(range);
       }
       
       // Actualizamos el contenido
@@ -350,7 +375,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         <div
           ref={editorRef}
           contentEditable
-          className="min-h-[200px] p-4 focus:outline-none"
+          className="min-h-[200px] max-h-[500px] overflow-y-auto p-4 focus:outline-none"
           dangerouslySetInnerHTML={{ __html: value }}
           onInput={(e) => onChange(e.currentTarget.innerHTML)}
         />
