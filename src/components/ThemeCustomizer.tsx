@@ -13,7 +13,7 @@ import { useDarkMode } from "@/hooks/useDarkMode";
 export const ThemeCustomizer = () => {
   const themeManager = useThemeManager();
   const themeState = useThemeState();
-  const { isDarkMode, setIsDarkMode } = useDarkMode();
+  const { isDarkMode, setIsDarkMode, toggleDarkMode } = useDarkMode();
   
   if (!themeManager || !themeState) {
     return null;
@@ -65,6 +65,8 @@ export const ThemeCustomizer = () => {
           allGradients={allGradients}
           colors={colors}
           currentGradient={getCurrentGradient()}
+          isDarkMode={isDarkMode}
+          onDarkModeChange={setIsDarkMode}
         />
       </Dialog>
     </ThemeProvider>

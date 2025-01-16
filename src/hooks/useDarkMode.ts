@@ -24,5 +24,5 @@ export const useDarkMode = () => {
     setIsDarkMode(prev => !prev);
   };
 
-  return { isDarkMode, toggleDarkMode };
+  return { isDarkMode, setIsDarkMode, toggleDarkMode };
 };
