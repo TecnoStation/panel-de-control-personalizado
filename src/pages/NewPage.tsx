@@ -27,8 +27,17 @@ const NewPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Nueva Página</h1>
+    <div className="p-6">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">Alta de Páginas</h1>
+        <div className="text-sm breadcrumbs">
+          <span className="text-gray-500">Home / Alta de Páginas</span>
+        </div>
+      </div>
+      
+      <Card className="bg-[#4C8C40] text-white p-4 mb-6">
+        <h2 className="text-lg">Nueva Página</h2>
+      </Card>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card className="p-6 space-y-6">
@@ -46,7 +55,7 @@ const NewPage = () => {
           <div className="space-y-2">
             <Label htmlFor="slug">Slug / URL</Label>
             <div className="flex items-center space-x-2">
-              <span className="text-gray-500">https://mipequenina.mx/</span>
+              <span className="text-gray-500">https://imperquimia.mx/</span>
               <Input
                 id="slug"
                 value={slug}
@@ -60,7 +69,7 @@ const NewPage = () => {
           <div className="space-y-2">
             <Label>Descripción</Label>
             <Editor
-              apiKey="your-api-key-here" // Necesitarás una API key de TinyMCE
+              apiKey="your-api-key-here"
               init={{
                 height: 500,
                 menubar: true,
@@ -80,7 +89,7 @@ const NewPage = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full bg-[#4C8C40] hover:bg-[#3d7033]">
             Guardar Página
           </Button>
         </Card>

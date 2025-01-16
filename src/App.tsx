@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDarkMode } from "@/hooks/useDarkMode";
+import { Sidebar } from "@/components/Sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import "./App.css";
 
 // Lazy load pages
@@ -36,29 +38,26 @@ const PageLoader = () => (
 const App = () => {
   const { isDarkMode } = useDarkMode();
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="w-screen min-h-screen bg-background text-foreground transition-colors">
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/nueva-pagina" element={<NewPage />} />
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
-        </div>
+        <SidebarProvider>
+          <div className="flex w-full min-h-screen bg-background text-foreground transition-colors">
+            <Sidebar />
+            <div className="flex-1">
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/nueva-pagina" element={<NewPage />} />
+                  </Routes>
+                </Suspense>
+              </BrowserRouter>
+            </div>
+          </div>
+        </SidebarProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
