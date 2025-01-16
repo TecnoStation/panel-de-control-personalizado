@@ -58,14 +58,40 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
 
   const handleLinkAdd = () => {
     if (linkUrl) {
-      execCommand("createLink", linkUrl);
+      // Aseguramos que el enlace tenga el protocolo
+      const url = linkUrl.startsWith('http://') || linkUrl.startsWith('https://') 
+        ? linkUrl 
+        : `https://${linkUrl}`;
+      
+      // Verificamos si hay texto seleccionado
+      const selection = window.getSelection();
+      if (selection && selection.toString().length > 0) {
+        execCommand("createLink", url);
+      } else {
+        // Si no hay texto seleccionado, insertamos el enlace con la URL como texto
+        const link = `<a href="${url}" target="_blank">${url}</a>`;
+        document.execCommand('insertHTML', false, link);
+      }
+      
       setLinkUrl("");
       setShowLinkInput(false);
     }
   };
 
   const handleFontSizeChange = (size: string) => {
-    execCommand("fontSize", size);
+    // Convertimos el tamaño a un índice que document.execCommand pueda entender
+    const sizeIndex = Math.ceil(parseInt(size) / 8);
+    execCommand("fontSize", String(sizeIndex));
+    
+    // Aplicamos el tamaño exacto usando CSS
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.fontSize = `${size}px`;
+      range.surroundContents(span);
+      onChange(editorRef.current?.innerHTML || '');
+    }
   };
 
   const handleFontFamilyChange = (family: string) => {
@@ -107,6 +133,23 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         }
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleListOperation = (type: 'ordered' | 'unordered') => {
+    // Aseguramos que estamos en el editor antes de ejecutar el comando
+    if (editorRef.current) {
+      editorRef.current.focus();
+      
+      // Ejecutamos el comando correspondiente
+      if (type === 'ordered') {
+        document.execCommand('insertOrderedList', false);
+      } else {
+        document.execCommand('insertUnorderedList', false);
+      }
+      
+      // Actualizamos el contenido
+      onChange(editorRef.current.innerHTML);
     }
   };
 
@@ -213,7 +256,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => execCommand("insertUnorderedList")}
+          onClick={() => handleListOperation('unordered')}
           title="Lista con viñetas"
         >
           <List className="h-4 w-4" />
@@ -221,7 +264,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => execCommand("insertOrderedList")}
+          onClick={() => handleListOperation('ordered')}
           title="Lista numerada"
         >
           <ListOrdered className="h-4 w-4" />
@@ -299,7 +342,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
 
       {showHtmlSource ? (
         <textarea
-          className="min-h-[200px] p-4 w-full font-mono text-sm focus:outline-none"
+          className="min-h-[200px] p-4 w-full font-mono text-sm focus:outline-none bg-background text-foreground"
           value={htmlSource}
           onChange={(e) => setHtmlSource(e.target.value)}
         />
