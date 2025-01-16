@@ -7,14 +7,21 @@ const THEME_COLOR_KEY = 'theme-color';
 export const useThemeManager = () => {
   const { toast } = useToast();
   const [selectedColor, setSelectedColor] = useState<ColorOption | null>(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem(THEME_COLOR_KEY);
-      return savedTheme ? JSON.parse(savedTheme) : null;
+    try {
+      if (typeof window !== 'undefined') {
+        const savedTheme = localStorage.getItem(THEME_COLOR_KEY);
+        return savedTheme ? JSON.parse(savedTheme) : null;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error loading saved theme:', error);
+      return null;
     }
-    return null;
   });
 
   const applyTheme = (color: ColorOption, showToast: boolean = false) => {
+    if (!color) return;
+    
     const root = document.documentElement;
     
     if ('value' in color) {

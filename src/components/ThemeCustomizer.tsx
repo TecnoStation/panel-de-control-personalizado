@@ -13,7 +13,7 @@ import { useDarkMode } from "@/hooks/useDarkMode";
 export const ThemeCustomizer = () => {
   const themeManager = useThemeManager();
   const themeState = useThemeState();
-  const { isDarkMode, setIsDarkMode, toggleDarkMode } = useDarkMode();
+  const { isDarkMode, setIsDarkMode } = useDarkMode();
   
   if (!themeManager || !themeState) {
     return null;
