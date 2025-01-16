@@ -38,12 +38,12 @@ export const Dashboard = () => {
   return (
     <div className="p-4 md:p-6 space-y-6 md:space-y-8">
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-gray-500">
+        <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
           <span>Dashboard</span>
           <ChevronRight className="w-4 h-4" />
         </div>
-        <h2 className="text-xl font-semibold">Active scenarios</h2>
-        <h2 className="text-xl font-semibold">Explore</h2>
+        <h2 className="text-xl font-semibold dark:text-white">Active scenarios</h2>
+        <h2 className="text-xl font-semibold dark:text-white">Explore</h2>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -53,8 +53,7 @@ export const Dashboard = () => {
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-4 md:mb-6">Recommended Templates</h2>
-        {/* Templates section to be added in future iterations */}
+        <h2 className="text-xl font-semibold mb-4 md:mb-6 dark:text-white">Recommended Templates</h2>
       </div>
     </div>
   );
