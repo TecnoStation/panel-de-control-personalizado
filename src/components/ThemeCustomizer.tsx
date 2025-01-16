@@ -11,6 +11,7 @@ import { ColorOption } from "./theme/types";
 export const ThemeCustomizer = () => {
   const themeManager = useThemeManager();
   
+  // Verificación temprana si themeManager no está disponible
   if (!themeManager) {
     console.error("ThemeManager no está disponible");
     return null;
@@ -93,9 +94,16 @@ export const ThemeCustomizer = () => {
   };
 
   const getCurrentGradient = (): string | undefined => {
-    if (!themeManager.selectedColor) return undefined;
-    const color = themeManager.selectedColor;
-    return 'value' in color ? color.value : undefined;
+    // Verificación más estricta de selectedColor
+    const color = themeManager?.selectedColor;
+    if (!color) return undefined;
+    
+    // Verificación de tipo usando type guard
+    const hasValue = (obj: any): obj is { value: string } => {
+      return obj && typeof obj === 'object' && 'value' in obj;
+    };
+    
+    return hasValue(color) ? color.value : undefined;
   };
 
   const allGradients = [...gradients, ...customGradients];
