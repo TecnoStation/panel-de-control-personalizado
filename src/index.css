@@ -106,27 +106,13 @@
 
 /* Gradient elements */
 .gradient-bg {
-  background: var(--theme-gradient, linear-gradient(267deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%));
-  color: white !important;
+  @apply bg-primary text-primary-foreground;
   transition: all 0.2s ease-in-out;
 }
 
 .button-gradient {
-  background: var(--theme-gradient, linear-gradient(267deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%)) !important;
-  color: white !important;
+  @apply bg-primary text-primary-foreground;
   transition: all 0.2s ease-in-out;
-}
-
-/* Aseguramos que el texto sea blanco en modo oscuro para los botones con gradiente */
-.dark button.gradient-bg,
-.dark button.button-gradient {
-  color: white !important;
-}
-
-/* Regla específica para el botón de elegir color */
-button.gradient-bg,
-button.button-gradient {
-  color: white !important;
 }
 
 .gradient-bg:hover,
@@ -175,15 +161,4 @@ button.button-gradient {
 /* Number styles */
 .number-gradient {
   @apply text-primary;
-  background: var(--theme-gradient, linear-gradient(267deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.dark .number-gradient {
-  background: var(--theme-gradient, linear-gradient(267deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
