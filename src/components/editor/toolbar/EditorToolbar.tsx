@@ -47,7 +47,10 @@ export const EditorToolbar = ({
       <ListControls onListOperation={onListOperation} />
       <div className="w-px h-6 bg-border mx-1 my-auto" />
       
-      <HeadingControls onHeadingOperation={onHeadingOperation} />
+      <HeadingControls 
+        onExecCommand={onExecCommand}
+        onHeadingOperation={onHeadingOperation} 
+      />
       <div className="w-px h-6 bg-border mx-1 my-auto" />
       
       <InsertControls
