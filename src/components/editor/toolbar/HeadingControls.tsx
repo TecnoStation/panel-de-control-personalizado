@@ -7,7 +7,7 @@ interface HeadingControlsProps {
   onHeadingOperation?: (tag: string) => void;
 }
 
-export const HeadingControls = ({ onHeadingOperation }: HeadingControlsProps) => {
+export const HeadingControls = ({ onExecCommand, onHeadingOperation }: HeadingControlsProps) => {
   return (
     <>
       <Button

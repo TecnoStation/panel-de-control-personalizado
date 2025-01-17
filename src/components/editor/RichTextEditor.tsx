@@ -76,13 +76,12 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         document.execCommand('insertUnorderedList', false);
       }
       
-      // Aseguramos que las listas tengan el estilo correcto
-      const lists = editorRef.current.querySelectorAll('ul, ol');
+      const lists = editorRef.current.querySelectorAll<HTMLElement>('ul, ol');
       lists.forEach(list => {
-        if (list.tagName === 'UL') {
+        if (list instanceof HTMLUListElement) {
           list.style.listStyleType = 'disc';
           list.style.paddingLeft = '2em';
-        } else {
+        } else if (list instanceof HTMLOListElement) {
           list.style.listStyleType = 'decimal';
           list.style.paddingLeft = '2em';
         }
@@ -97,8 +96,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
       editorRef.current.focus();
       document.execCommand('formatBlock', false, tag);
       
-      // Aplicar estilos específicos a los encabezados
-      const headings = editorRef.current.querySelectorAll('h1, h2');
+      const headings = editorRef.current.querySelectorAll<HTMLElement>('h1, h2');
       headings.forEach(heading => {
         if (heading.tagName === 'H1') {
           heading.style.fontSize = '2em';
