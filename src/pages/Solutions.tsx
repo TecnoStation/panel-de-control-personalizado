@@ -15,7 +15,7 @@ const Solutions = () => {
         <h1 className="text-2xl font-bold">Problemas y Soluciones</h1>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>Nuevo Apartado</Button>
+            <Button className="button-gradient">Nuevo Apartado</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -26,7 +26,7 @@ const Solutions = () => {
                 <Button variant="outline">Cancelar</Button>
               </DialogTrigger>
               <DialogTrigger asChild>
-                <Button type="submit">Enviar</Button>
+                <Button type="submit" className="button-gradient">Enviar</Button>
               </DialogTrigger>
             </DialogFooter>
           </DialogContent>

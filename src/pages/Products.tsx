@@ -15,7 +15,7 @@ const Products = () => {
         <h1 className="text-2xl font-bold">Productos</h1>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>Alta de Productos</Button>
+            <Button className="button-gradient">Alta de Productos</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -26,7 +26,7 @@ const Products = () => {
                 <Button variant="outline">Cancelar</Button>
               </DialogTrigger>
               <DialogTrigger asChild>
-                <Button type="submit">Enviar</Button>
+                <Button type="submit" className="button-gradient">Enviar</Button>
               </DialogTrigger>
             </DialogFooter>
           </DialogContent>

@@ -15,7 +15,7 @@ const News = () => {
         <h1 className="text-2xl font-bold">Noticias</h1>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>Crear Noticia</Button>
+            <Button className="button-gradient">Crear Noticia</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -26,7 +26,7 @@ const News = () => {
                 <Button variant="outline">Cancelar</Button>
               </DialogTrigger>
               <DialogTrigger asChild>
-                <Button type="submit">Enviar</Button>
+                <Button type="submit" className="button-gradient">Enviar</Button>
               </DialogTrigger>
             </DialogFooter>
           </DialogContent>
