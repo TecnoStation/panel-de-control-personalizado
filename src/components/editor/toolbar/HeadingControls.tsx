@@ -4,15 +4,16 @@ import { Heading1, Heading2 } from 'lucide-react';
 
 interface HeadingControlsProps {
   onExecCommand: (command: string, value?: string | boolean) => void;
+  onHeadingOperation?: (tag: string) => void;
 }
 
-export const HeadingControls = ({ onExecCommand }: HeadingControlsProps) => {
+export const HeadingControls = ({ onHeadingOperation }: HeadingControlsProps) => {
   return (
     <>
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => onExecCommand("formatBlock", "h1")}
+        onClick={() => onHeadingOperation?.("h1")}
         title="Encabezado 1"
       >
         <Heading1 className="h-4 w-4" />
@@ -20,7 +21,7 @@ export const HeadingControls = ({ onExecCommand }: HeadingControlsProps) => {
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => onExecCommand("formatBlock", "h2")}
+        onClick={() => onHeadingOperation?.("h2")}
         title="Encabezado 2"
       >
         <Heading2 className="h-4 w-4" />

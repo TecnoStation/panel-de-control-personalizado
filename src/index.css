@@ -97,6 +97,39 @@
   .dark input::placeholder {
     color: rgba(255, 255, 255, 0.7) !important;
   }
+
+  /* Estilos para el editor de texto enriquecido */
+  [contenteditable] {
+    outline: none;
+  }
+
+  [contenteditable] h1 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+  }
+
+  [contenteditable] h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 0.4em;
+  }
+
+  [contenteditable] ul {
+    list-style-type: disc !important;
+    padding-left: 2em !important;
+    margin: 1em 0;
+  }
+
+  [contenteditable] ol {
+    list-style-type: decimal !important;
+    padding-left: 2em !important;
+    margin: 1em 0;
+  }
+
+  [contenteditable] li {
+    margin: 0.5em 0;
+  }
 }
 
 /* Navigation styles */
@@ -209,14 +242,4 @@ button.button-gradient {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-/* Dropdown styles */
-.DropdownMenuContent {
-  @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg;
-  z-index: 50;
-}
-
-.DropdownMenuItem {
-  @apply px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700;
 }

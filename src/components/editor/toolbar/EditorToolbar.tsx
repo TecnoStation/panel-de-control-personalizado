@@ -15,6 +15,7 @@ interface EditorToolbarProps {
   onShowLinkInput: () => void;
   onToggleHtmlSource: () => void;
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onHeadingOperation: (tag: string) => void;
 }
 
 export const EditorToolbar = ({
@@ -25,7 +26,8 @@ export const EditorToolbar = ({
   onListOperation,
   onShowLinkInput,
   onToggleHtmlSource,
-  onImageUpload
+  onImageUpload,
+  onHeadingOperation
 }: EditorToolbarProps) => {
   return (
     <div className="border-b p-2 flex flex-wrap gap-1 bg-muted/30">
@@ -45,7 +47,7 @@ export const EditorToolbar = ({
       <ListControls onListOperation={onListOperation} />
       <div className="w-px h-6 bg-border mx-1 my-auto" />
       
-      <HeadingControls onExecCommand={onExecCommand} />
+      <HeadingControls onHeadingOperation={onHeadingOperation} />
       <div className="w-px h-6 bg-border mx-1 my-auto" />
       
       <InsertControls

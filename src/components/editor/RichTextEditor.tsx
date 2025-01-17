@@ -70,19 +70,46 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
     if (editorRef.current) {
       editorRef.current.focus();
       
-      const selection = window.getSelection();
-      const range = selection?.getRangeAt(0);
-      
       if (type === 'ordered') {
         document.execCommand('insertOrderedList', false);
       } else {
         document.execCommand('insertUnorderedList', false);
       }
       
-      if (selection && range) {
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }
+      // Aseguramos que las listas tengan el estilo correcto
+      const lists = editorRef.current.querySelectorAll('ul, ol');
+      lists.forEach(list => {
+        if (list.tagName === 'UL') {
+          list.style.listStyleType = 'disc';
+          list.style.paddingLeft = '2em';
+        } else {
+          list.style.listStyleType = 'decimal';
+          list.style.paddingLeft = '2em';
+        }
+      });
+      
+      onChange(editorRef.current.innerHTML);
+    }
+  };
+
+  const handleHeadingOperation = (tag: string) => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+      document.execCommand('formatBlock', false, tag);
+      
+      // Aplicar estilos específicos a los encabezados
+      const headings = editorRef.current.querySelectorAll('h1, h2');
+      headings.forEach(heading => {
+        if (heading.tagName === 'H1') {
+          heading.style.fontSize = '2em';
+          heading.style.fontWeight = 'bold';
+          heading.style.marginBottom = '0.5em';
+        } else if (heading.tagName === 'H2') {
+          heading.style.fontSize = '1.5em';
+          heading.style.fontWeight = 'bold';
+          heading.style.marginBottom = '0.4em';
+        }
+      });
       
       onChange(editorRef.current.innerHTML);
     }
@@ -133,6 +160,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         onShowLinkInput={() => setShowLinkInput(!showLinkInput)}
         onToggleHtmlSource={toggleHtmlSource}
         onImageUpload={handleImageUpload}
+        onHeadingOperation={handleHeadingOperation}
       />
       
       {showLinkInput && (
@@ -152,7 +180,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
 
       {showHtmlSource ? (
         <textarea
-          className="min-h-[200px] p-4 w-full font-mono text-sm focus:outline-none bg-background text-foreground"
+          className="min-h-[200px] p-4 w-full font-mono text-sm focus:outline-none dark:bg-gray-800 dark:text-white bg-white text-black"
           value={htmlSource}
           onChange={(e) => setHtmlSource(e.target.value)}
         />
@@ -160,7 +188,7 @@ export const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         <div
           ref={editorRef}
           contentEditable
-          className="min-h-[200px] max-h-[500px] overflow-y-auto p-4 focus:outline-none"
+          className="min-h-[200px] max-h-[500px] overflow-y-auto p-4 focus:outline-none prose dark:prose-invert max-w-none"
           dangerouslySetInnerHTML={{ __html: value }}
           onInput={(e) => onChange(e.currentTarget.innerHTML)}
         />
