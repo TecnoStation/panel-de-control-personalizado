@@ -34,7 +34,9 @@ const Pages = () => {
         <h1 className="text-2xl font-bold">Páginas</h1>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button className="gradient-bg">Nueva Página</Button>
+            <Button className="button-gradient">
+              Nueva Página
+            </Button>
           </DialogTrigger>
           <DialogContent className="max-w-3xl">
             <DialogHeader>
@@ -80,7 +82,7 @@ const Pages = () => {
               <Button variant="outline" onClick={() => setIsOpen(false)}>
                 Cancelar
               </Button>
-              <Button onClick={handleSubmit} className="gradient-bg">
+              <Button onClick={handleSubmit} className="button-gradient">
                 Crear página
               </Button>
             </DialogFooter>
