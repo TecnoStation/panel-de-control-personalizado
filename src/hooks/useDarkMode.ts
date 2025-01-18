@@ -1,33 +1,26 @@
 import { useEffect, useState } from 'react';
 
-export function useDarkMode() {
+export const useDarkMode = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    // Check if window is defined (client-side)
-    if (typeof window !== 'undefined') {
-      const savedMode = localStorage.getItem('darkMode');
-      if (savedMode !== null) {
-        return savedMode === 'true';
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    return false;
+    // Solo ejecutar este código en el cliente
+    if (typeof window === 'undefined') return false;
+    
+    const savedMode = localStorage.getItem('darkMode');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    return savedMode ? savedMode === 'true' : prefersDark;
   });
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const root = window.document.documentElement;
-      if (isDarkMode) {
-        root.classList.add('dark');
-        localStorage.setItem('darkMode', 'true');
-      } else {
-        root.classList.remove('dark');
-        localStorage.setItem('darkMode', 'false');
-      }
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('darkMode', 'false');
     }
   }, [isDarkMode]);
 
-  return {
-    isDarkMode,
-    setIsDarkMode,
-  };
-}
+  return { isDarkMode, setIsDarkMode };
+};
