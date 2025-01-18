@@ -9,7 +9,6 @@ import { useDarkMode } from "@/hooks/useDarkMode";
 import { Sidebar } from "@/components/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeCustomizer } from "@/components/ThemeCustomizer";
-import "./App.css";
 
 // Lazy load pages
 const Menu = lazy(() => import("./pages/Menu"));
@@ -58,9 +57,9 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <SidebarProvider>
-          <div className={`flex w-full min-h-screen bg-background text-foreground transition-colors ${isDarkMode ? 'dark' : ''}`}>
+          <div className={`flex w-full min-h-screen bg-background text-foreground transition-colors duration-300 ${isDarkMode ? 'dark' : ''}`}>
             <Sidebar />
-            <div className="flex-1">
+            <div className="flex-1 bg-background">
               <Toaster />
               <Sonner />
               <Suspense fallback={<PageLoader />}>
