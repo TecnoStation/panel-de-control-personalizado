@@ -105,12 +105,9 @@
 }
 
 /* Gradient elements */
-.gradient-bg {
-  @apply bg-primary text-primary-foreground hover:opacity-90 transition-opacity;
-}
-
+.gradient-bg,
 .button-gradient {
-  @apply bg-primary text-primary-foreground hover:opacity-90 transition-opacity;
+  @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors;
 }
 
 /* Card styles */
