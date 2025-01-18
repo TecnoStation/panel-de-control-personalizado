@@ -50,16 +50,16 @@ const PageLoader = () => (
   </div>
 );
 
-const App = () => {
+function App() {
   const { isDarkMode } = useDarkMode();
 
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <SidebarProvider>
-          <div className={`flex w-full min-h-screen bg-background text-foreground transition-colors duration-300 ${isDarkMode ? 'dark' : ''}`}>
+          <div className={`flex w-full min-h-screen transition-colors duration-300 ${isDarkMode ? 'dark' : ''}`}>
             <Sidebar />
-            <div className="flex-1 bg-background">
+            <div className="flex-1 bg-background text-foreground">
               <Toaster />
               <Sonner />
               <Suspense fallback={<PageLoader />}>
@@ -90,6 +90,6 @@ const App = () => {
       </TooltipProvider>
     </QueryClientProvider>
   );
-};
+}
 
 export default App;

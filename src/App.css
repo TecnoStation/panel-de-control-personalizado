@@ -3,8 +3,23 @@
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: white;
   color: #1a1f2c;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1a1f2c;
+}
+
+.dark {
+  --background: #1E1E1E;
+  --foreground: #ffffff;
+}
+
+.dark #root {
+  color: var(--foreground);
+  background-color: var(--background);
 }
 
 .logo {
@@ -13,9 +28,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
