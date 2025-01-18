@@ -106,19 +106,11 @@
 
 /* Gradient elements */
 .gradient-bg {
-  @apply bg-primary text-primary-foreground;
-  transition: all 0.2s ease-in-out;
+  @apply bg-primary text-primary-foreground hover:opacity-90 transition-opacity;
 }
 
 .button-gradient {
-  @apply bg-primary text-primary-foreground;
-  transition: all 0.2s ease-in-out;
-}
-
-.gradient-bg:hover,
-.button-gradient:hover {
-  opacity: 0.9;
-  filter: brightness(1.1);
+  @apply bg-primary text-primary-foreground hover:opacity-90 transition-opacity;
 }
 
 /* Card styles */
