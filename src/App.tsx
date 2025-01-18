@@ -10,7 +10,6 @@ import { Sidebar } from "@/components/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeCustomizer } from "@/components/ThemeCustomizer";
 
-// Lazy load pages
 const Menu = lazy(() => import("./pages/Menu"));
 const Categories = lazy(() => import("./pages/Categories"));
 const Newsletter = lazy(() => import("./pages/Newsletter"));
@@ -50,46 +49,46 @@ const PageLoader = () => (
   </div>
 );
 
-function App() {
+export default function App() {
   const { isDarkMode } = useDarkMode();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <SidebarProvider>
-          <div className={`flex w-full min-h-screen transition-colors duration-300 ${isDarkMode ? 'dark' : ''}`}>
-            <Sidebar />
-            <div className="flex-1 bg-background text-foreground">
-              <Toaster />
-              <Sonner />
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  <Route path="/" element={<Menu />} />
-                  <Route path="/categorias" element={<Categories />} />
-                  <Route path="/newsletter" element={<Newsletter />} />
-                  <Route path="/noticias" element={<News />} />
-                  <Route path="/productos" element={<Products />} />
-                  <Route path="/paginas" element={<Pages />} />
-                  <Route path="/slider" element={<Slider />} />
-                  <Route path="/promociones" element={<Promotions />} />
-                  <Route path="/plantillas" element={<Templates />} />
-                  <Route path="/videos" element={<Videos />} />
-                  <Route path="/distribucion" element={<Distribution />} />
-                  <Route path="/soluciones" element={<Solutions />} />
-                  <Route path="/mas-vendidos" element={<BestSellers />} />
-                  <Route path="/administradores" element={<Administrators />} />
-                  <Route path="/clientes" element={<Clients />} />
-                  <Route path="/pedidos" element={<Orders />} />
-                  <Route path="/comentarios" element={<Comments />} />
-                </Routes>
-              </Suspense>
+      <div className={isDarkMode ? 'dark' : ''}>
+        <TooltipProvider>
+          <SidebarProvider>
+            <div className="flex w-full min-h-screen bg-background text-foreground transition-colors duration-300">
+              <Sidebar />
+              <div className="flex-1">
+                <Toaster />
+                <Sonner />
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    <Route path="/" element={<Menu />} />
+                    <Route path="/categorias" element={<Categories />} />
+                    <Route path="/newsletter" element={<Newsletter />} />
+                    <Route path="/noticias" element={<News />} />
+                    <Route path="/productos" element={<Products />} />
+                    <Route path="/paginas" element={<Pages />} />
+                    <Route path="/slider" element={<Slider />} />
+                    <Route path="/promociones" element={<Promotions />} />
+                    <Route path="/plantillas" element={<Templates />} />
+                    <Route path="/videos" element={<Videos />} />
+                    <Route path="/distribucion" element={<Distribution />} />
+                    <Route path="/soluciones" element={<Solutions />} />
+                    <Route path="/mas-vendidos" element={<BestSellers />} />
+                    <Route path="/administradores" element={<Administrators />} />
+                    <Route path="/clientes" element={<Clients />} />
+                    <Route path="/pedidos" element={<Orders />} />
+                    <Route path="/comentarios" element={<Comments />} />
+                  </Routes>
+                </Suspense>
+              </div>
+              <ThemeCustomizer />
             </div>
-            <ThemeCustomizer />
-          </div>
-        </SidebarProvider>
-      </TooltipProvider>
+          </SidebarProvider>
+        </TooltipProvider>
+      </div>
     </QueryClientProvider>
   );
 }
-
-export default App;
