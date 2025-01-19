@@ -6,18 +6,16 @@ export const Header = () => {
   const { setOpenMobile } = useSidebar();
 
   return (
-    <div className="flex justify-between items-center p-4 border-b">
+    <div className="flex justify-between items-center p-4 border-b bg-background">
       <div className="flex items-center gap-4">
-        <div className="block md:hidden">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-7 w-7"
-            onClick={() => setOpenMobile(true)}
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={() => setOpenMobile(true)}
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
         <h1 className="text-2xl font-semibold">My Organization</h1>
       </div>
       <div className="flex gap-2 md:gap-4">
