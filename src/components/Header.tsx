@@ -11,10 +11,10 @@ export const Header = () => {
         <Button
           variant="outline"
           size="icon"
-          className="block md:hidden"
+          className="block md:hidden text-foreground hover:text-foreground"
           onClick={() => setOpenMobile(true)}
         >
-          <Menu className="h-6 w-6" />
+          <Menu className="h-5 w-5" />
         </Button>
         <h1 className="text-2xl font-semibold">My Organization</h1>
       </div>
