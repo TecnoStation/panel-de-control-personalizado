@@ -11,7 +11,7 @@ export const Header = () => {
         <Button
           variant="outline"
           size="icon"
-          className="block md:hidden text-foreground hover:text-foreground"
+          className="block md:hidden text-foreground hover:text-foreground dark:text-white dark:hover:text-white"
           onClick={() => setOpenMobile(true)}
         >
           <Menu className="h-5 w-5" />

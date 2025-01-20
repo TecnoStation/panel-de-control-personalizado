@@ -30,6 +30,10 @@ export const useDarkMode = () => {
       // Limpiar estilos inline
       document.body.style.removeProperty('background-color');
       document.body.style.removeProperty('color');
+      
+      // Forzar actualización de variables CSS
+      root.style.setProperty('--background', isDarkMode ? '222.2 84% 4.9%' : '0 0% 100%');
+      root.style.setProperty('--foreground', isDarkMode ? '210 40% 98%' : '222.2 84% 4.9%');
     };
 
     // Aplicar tema inmediatamente
