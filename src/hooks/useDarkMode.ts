@@ -14,18 +14,24 @@ export const useDarkMode = () => {
 
   useEffect(() => {
     const root = document.documentElement;
+    const html = document.querySelector('html');
     
     if (isDarkMode) {
       root.classList.add('dark');
+      html?.classList.add('dark');
     } else {
       root.classList.remove('dark');
+      html?.classList.remove('dark');
     }
     
     localStorage.setItem('darkMode', isDarkMode.toString());
 
     // Forzar la actualización de los estilos
-    document.body.style.backgroundColor = '';
-    document.body.offsetHeight;
+    requestAnimationFrame(() => {
+      document.body.style.backgroundColor = '';
+      document.body.style.color = '';
+      void document.body.offsetHeight;
+    });
   }, [isDarkMode]);
 
   return { isDarkMode, setIsDarkMode };
